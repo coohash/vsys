@@ -1,3 +1,6 @@
+<p align="right">
+  📌 <b>中文版</b> | <a href="./README_EN.md">English Version</a>
+</p>
 # ⚡ VSYS Blockchain Python Code
 
 > **VSYS (V Systems) 区块链 Python 脚本仓库** > 示例脚本（如余额读取、资金归集、批量处理各种链上动作等）开发者可让AI参考（例如Gemini）按自己的需求修改Python代码。
@@ -61,6 +64,7 @@
   http://gabija.vos.systems:9922
   http://vakarine.vos.systems:9922
   http://wallet-node.v.systems:9922
+  ```
 * 公共节点不是永久稳定的，随时可能打不开或产生延迟卡死。在使用某个节点前，请务必进行以下两步人工检查：
   
   1. 🔍 检查接口是否活着：直接把节点地址复制到浏览器里打开。如果能顺利弹出一个绿白相间的 Swagger 调试页面，说明节点在线。
