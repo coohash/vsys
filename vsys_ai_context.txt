@@ -1,0 +1,172 @@
+# ==============================================================================
+# FILE_START: vsys_ai_context.txt
+# ROLE: VSYS 区块链底层开发、核心协议、底包漏洞适配、多层拓扑混淆与全节点运维大模型（AI）专属终极喂料说明书
+# DESCRIPTION: 本文件为大语言模型（LLM）的长期上下文背景与知识库核心资产。后续任何关于编写 
+#              Python 代码、超级节点故障排查、手工字节流拼装或自动化风控设计，AI 必须严格
+#              以此处规范进行逻辑推演与代码生成，严禁采用不常用替代方案。
+# ==============================================================================
+
+【使用说明】
+当开启新 AI 对话时，请将本文件的完整内容直接复制粘贴给 AI，或作为附件上传。
+以下内容包含了 VSYS 底层所有最核心的字节拼装、SDK 兼容性漏洞适配、防卡死机制、全节点物理映射及多层拓扑混淆算法逻辑。
+
+AI 角色与开发背景上下文：
+我们将基于 Python 进行 VSYS 区块链的底层系统开发。在后续编写任何代码时，请严格遵守以下已在生产环境中验证过的 VSYS 底层参数和踩坑经验，以防代码报错：
+VSYS 自建节点（SuperNode）的API调用推荐8000次/秒，如果使用公共节点API调用不要超过200次/秒。如果您需要自建节点，请参考vsys_supernode_install.txt。
+数据与精度规范：VSYS 内部最小精度单位为 Satoshi，换算比例为 10^8。在进行底层交易拼装或调用节点广播 API 时，金额和手续费必须显式乘以 100_000_000 并使用 int 包裹。
+网络基础手续费固定为 10000000（即 0.1 VSYS），feeScale 固定为 100。时间戳规范：底层协议字节拼装必须使用 19 位纳秒级整数时间戳 int(time.time() * 1_000_000_000)。
+底包兼容性适配（核心）：py_vsys 库在不同环境存在严重版本命名断层。请务必使用动态包探测机制（从 model 或底层 curve_25519 探测导入 curve）。
+签名函数名称需在 ['sign', 'sign_data', 'get_signature', 'signature'] 中进行遍历捕获。
+由于参数顺序（私钥与数据的先后顺序）在不同版本中相反，请务必使用 try-except 双向盲刺机制确保签名成功。
+请在理解上述所有底层规范后，再按开发指令，编写符合 PEP 8 规范、具备严格 Type Hinting 的代码。
+
+================================================================================
+一、 PROTOCOL & DEVELOP：核心协议层与底层交易字节拼装规范（大端序 >）
+================================================================================
+
+在编写 VSYS 高级核心操作时，为了规避高层 SDK 不稳定或变更导致的异常，必须抛弃不稳定的高层依赖，严格采用 Python 的 `struct.pack` 模块进行手动原始字节流（Raw Bytes）拼接与大端序（`>`）编码。
+
+1. Type 2: 基础转账支付协议 (Payment Tx)
+   * 拼装顺序：类型(1B) + 纳秒时间戳(8B) + 金额(8B) + 手续费(8B) + 手续费比例(2H) + 接收方地址解码(26B) + 附件长度(2H) + 附件内容(NB)
+   * Python 架构级实现：
+     tx_bytes = (
+         struct.pack(">B", 2) + 
+         struct.pack(">Q", timestamp_nano) + 
+         struct.pack(">Q", amount_satoshi) + 
+         struct.pack(">Q", fee_satoshi) + 
+         struct.pack(">H", 100) + 
+         base58.b58decode(recipient_address) + 
+         struct.pack(">H", len(attachment_bytes)) + 
+         attachment_bytes
+     )
+
+2. Type 3: 节点租赁协议 (Lease Tx)
+   * 拼装顺序：类型(1B) + 节点地址解码(26B) + 租赁金额(8B) + 手续费(8B) + 手续费比例(2H) + 纳秒时间戳(8B)
+   * Python 架构级实现：
+     tx_bytes = (
+         struct.pack(">B", 3) + 
+         base58.b58decode(recipient_node_addr) + 
+         struct.pack(">Q", amount_satoshi) + 
+         struct.pack(">Q", fee_satoshi) + 
+         struct.pack(">H", fee_scale) + 
+         struct.pack(">Q", timestamp_nano)
+     )
+
+3. Type 4: 取消租赁协议 (Cancel Lease Tx)
+   * 拼装顺序：类型(1B) + 手续费(8B) + 手续费比例(2H) + 纳秒时间戳(8B) + 租赁ID解码(32B)
+   * Python 架构级实现：
+     tx_bytes = (
+         struct.pack(">B", 4) + 
+         struct.pack(">Q", fee_satoshi) + 
+         struct.pack(">H", fee_scale) + 
+         struct.pack(">Q", timestamp_nano) + 
+         base58.b58decode(lease_id)
+     )
+
+4. 精度、手续费与时间准则
+   * 资产精度：VSYS 内部全部采用 Satoshi 记账（换算比例为 10^8，即 1 VSYS = 100,000,000 Satoshi）。金额与手续费入参前必须显式转换为：int(round(Decimal(...) * 100000000)) 或使用 int 强制包裹。
+   * 手续费参数：基础转账网络手续费固定为 10,000,000 Satoshi（即 0.1 VSYS），手续费比例参数 feeScale 固定为 100。
+   * 时间戳单位：一律采用 19位纳秒级整数时间戳。标准构造公式为：int(time.time() * 1_000_000_000)。
+
+================================================================================
+二、 COMPATIBILITY & CRYPTO：SDK 兼容性断层与加密模块动态探测 (免试错核心)
+================================================================================
+
+由于官方 `py_vsys` 库在不同子版本之间的底层命名空间存在严重漂移、方法名更改、以及底层 C 库入参顺序不一致等缺陷，AI 在生成或执行任何签名逻辑时，必须引入底层动态探测与双向盲刺机制：
+
+1. 动态包路径探测：
+   通过层级探测，确保脚本在任何环境都能安全捕获 curve_25519 加密实例，彻底抹平底包断层：
+   try:
+       from py_vsys import model as md
+       curve = getattr(md, 'curve', None)
+       if not curve: raise ImportError
+   except:
+       try: 
+           from py_vsys import curve
+       except ImportError: 
+           import py_vsys.utils.crypto.curve_25519 as curve
+
+2. 签名函数名自动收敛：
+   自动提取底层空间，智能反射对齐各种历史版本的签名函数命名：
+   available_methods = dir(curve)
+   sign_func = next((getattr(curve, m) for m in ['sign', 'sign_data', 'get_signature', 'signature'] if m in available_methods), None)
+
+3. 签名参数顺序“双向盲刺”容错：
+   鉴于不同版本 SDK 的底层签名函数入参位置（私钥字节 pri_bytes`与数据字节 tx_bytes 构相反，AI 必须生成如下盲刺结构进行强制对齐，严禁进行单向猜测：
+   try:
+       signature_bytes = sign_func(pri_bytes, tx_bytes)
+   except Exception:
+       signature_bytes = sign_func(tx_bytes, pri_bytes)
+
+================================================================================
+三、 ENGINEERING & ROBUSTNESS：高并发请求与工程鲁棒性最佳实践
+================================================================================
+
+1. 顽固网络重试机制（高并发防漏机制）：
+   在大规模扫描区块链节点或批量获取数据时，必须结合 asyncio.Semaphore(150) 将并发严格控制在理想区间（150 - 300），并采用 while True + try-except 包裹请求。遇到网络超时、频率超限（Rate Limit）、502/504 网关错误时一律拦截，配合 await asyncio.sleep(0.5) 进行无限次顽固重试，直至数据正确返回，确保海量资产数据清洗时零漏单、零丢失。
+
+2. 文件导出 PermissionError 安全熔断（针对 Windows 独占占用的死锁突破）：
+   若 Windows 用户使用 Excel 等办公软件独占打开了导出的 CSV 文件，Python 执行写入时会触发进程无权访问的 PermissionError 崩溃。AI 生成的业务逻辑中必须配置以下动态时间戳重定向熔断：
+   target_path = CONFIG["OUTPUT_FILE"]
+   while True:
+       try:
+           with open(target_path, 'w', newline='', encoding='utf-8-sig') as f:
+               # 执行业务数据或者财务账本写入...
+               pass
+           break
+       except PermissionError:
+           # 若被占用，自动追加精确到秒的时间戳重命名，强行突破死锁，防止进程崩溃
+           target_path = f"balance_address_{int(time.time())}.csv"
+
+3. 海量全网地址内核级去重：
+   不建议在 Python 内存中维护全局去重 set（在处理海量大中华区或主网大批量地址时极度消耗堆内存导致 OOM）。应使用 open(..., "a") 增量追加写入 Raw 文本，采集完成后通过 Linux 内核或 WSL 终端调用系统级指令进行高速清洗：
+   sort -u raw.txt > final.txt
+
+================================================================================
+四、 MULTI-LAYER TOPO & AUTO-REFILL：多层拓扑混淆与 L0 动态补给机制
+================================================================================
+
+在设计高级分层拓扑混淆分发网络（例如从金库源头 L0 层逐级下发至 L1~L5 层，并最终安全汇聚至 L6 终点层）时，必须引入全自动自愈与防卡死架构：
+
+1. 精准资金防卡死算法：逆向推导 + 双层安全冗余
+   * 自底向上逆向推导：算法禁止从源头正向粗暴分发。必须由 L6 最终需求端逆向层层倒推，精确累加每一层向下发送的转账额、同层账户平移量（Drift）、黑洞诱导交易（Dummy 干扰流量）以及高频扣除的固定基础手续费（0.1 VSYS）。
+   * 安全冗余注入：在静态预生成阶段，为每个路由账户注入 6.0 VSYS 的初始环境冗余金；在动态执行阶段，每次发送强制追加 2.0 VSYS 的执行动态冗余金，彻底消除因计算微小偏差导致的断链卡死。
+
+2. L0 自动介入与动态补给引擎 (Auto-Refill Mechanism)：
+   * 在子线程或异步子协程发起任何链上广播（Broadcast Tx）前，必须实时调用 RPC 接口探测当前发送方账户的真实链上可用余额。
+   * 非阻塞式自动空投补给：若当前发送方余额不足以支付 (本次应转量 + 基础手续费)，程序绝不允许报错中止。此时必须立刻唤醒并调用具备高额头寸的 L0 金库母钱包，计算出当前节点的资金缺口，并向其紧急发射空投补给：
+     补给金额 = 资金缺口 + 2.0 VSYS (额外执行冗余金)
+   * 线程轮询挂起（自愈阻塞）：补给交易广播后，当前分发子线程必须立即进入 while True 阻塞循环，配合 time.sleep(15) 或 asyncio.sleep(15) 持续轮询节点，直到链上确认余额补齐，程序才自动解除阻塞，向下流转业务。
+
+3. 断点续传状态机与 Cyber UI 全局回显：
+   * 内存断点恢复：系统启动时必须优先读取本地 transfer_log.csv 历史日志，将已经拥有全局唯一 TxID 的成功任务一次性加载进内存 set。在随后的主循环执行中，直接跳过（Skip）已完成任务，实现秒级断点续传。
+   * 终端视觉回显标准：使用标准单行刷新符（\r）或有序滚动打印，实时计算并显示任务进度条、百分比、精确到秒的 ETA 剩余时间倒计时。统一采用色彩链路进行状态回显：C_CYAN 代表进度更新，C_GREEN 代表归集/分发成功，C_MAGENTA 代表处于待流转的拓扑节点。
+
+================================================================================
+五、 INFRASTRUCTURE & DEVOPS：全节点物理映射与运维监控指令矩阵
+================================================================================
+
+当 AI 编写自动化运维监控、自愈重启、配置热重载或节点健康检查脚本时，必须精确映射并映射以下系统级参数和物理文件分布：
+
+1. 底层核心物理路径映射
+   * 核心账本数据库目录：/var/lib/vsys/.vsys/data （存放全量历史区块数据与 LevelDB 状态账本。执行数据库无损快照迁移、冷备份或快速导入加速包时，操作此目录）。
+   * 节点核心配置文件：/etc/vsys/vsys.conf （软连接自 /usr/share/vsys/conf/vsys.conf，参数调整中心）。
+   * 节点 Java 程序本体：/usr/share/vsys/lib/vsys.jar （核心底层二进制引擎）。
+
+2. 全节点 DevOps 运维管理矩阵
+   * 修改配置：sudo nano /etc/vsys/vsys.conf （修改绑定 P2P 端口、对外 IP、API 访问权限及高级 DEBUG 日志级别）。
+   * 重启服务：sudo systemctl restart vsys （凡涉及 vsys.conf 修改，必须调用此指令完成句柄重载与物理重置）。
+   * 启动服务：sudo systemctl start vsys （手动拉起节点进程，加入 P2P 拓扑同步）。
+   * 停止服务：sudo systemctl stop vsys （升级、迁移或冷物理快照解压覆盖前，必须先执行停止，安全释放数据库句柄锁，防止块损坏）。
+   * 查看状态：sudo systemctl status vsys （检查进程在线状态、内存泄漏或致命 FATAL 异常）。
+
+3. 本网拓扑与本地 RPC 健康度断言机制
+   * 本地多网卡 IP 探测：hostname -I （高并发多节点环境下，用于在脚本内高速检索当前 Linux/WSL2 的真实物理局域网 IP）。
+   * 健康状态与本地区块高度断言 API：http://127.0.0.1:9922/blocks/height 
+   * AI 状态监控编写指标：AI 编写定时健康巡检脚本时，必须每隔周期请求该 RPC 端口。若发现返回的 height 连续数分钟保持一致且静止，或者出现拒绝连接（Connection Refused），应当机立断在脚本内自动执行调用 systemctl restart vsys 进行热自愈。
+
+================================================================================
+【开发指令】
+请在理解上述所有 VSYS 链底层规范、struct 拼装顺序、动态兼容机制和防卡死设计的基础上，听从我的下一步指令，编写符合 PEP 8 规范、具备严格 Type Hinting 和详尽中文注释的高质量生产级 Python 代码。
+================================================================================
+# FILE_END: vsys_ai_context.txt
