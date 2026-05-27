@@ -25,9 +25,9 @@
 # 2. 善后锁死：脚本不运行时，必须将上述两个 CSV 文件彻底剪切移动至离线安全 U 盘中，并在联网服务器上粉碎删除。
 # 3. 永续价值：由于散户地址内会随机残留 “设定的” VSYS 沉淀资产，上述私钥账本(包含addresses.csv)是未来收回这笔沉淀的唯一凭证！
 #
-# 💻 [前台高亮长效运行方案（本地 PC 临时测试）]
+# 💻 [前台长效运行方案（本地 PC 临时测试）]
 # 提示：本代码需 7×24 小时长时间不间断轮询，本地前台运行时绝对不可关闭终端窗口，不可让电脑进入休眠或断网状态。
-# cd /www/wwwroot/vsys_volume_booster
+# 右键点击代码所在的文件目录 -> 选择“在终端打开” -> 在控制台中输入以下命令并回车运行：
 # python vsys_volume_booster.py
 #
 # 🐧 [Linux 服务器/VPS 后台静默长效长跑部署指南（推荐）]
@@ -50,7 +50,7 @@
 #
 # 🧹 [Linux 磁盘文件系统维护（日志清理与 Crontab 零点自动截断）]
 # 1. 手动瞬间排空并清零当前日志
-#    > /www/wwwroot/vsys_monitor/vsys_run.log
+#    > /www/wwwroot/vsys_volume_booster/vsys_run.log
 # 2. 挂载系统级自动化定时任务（每隔 3 天的凌晨 0 点，自动触发一次物理截断清空）
 #    执行下面这条组合指令，可自动在系统的 crontab 表中追加并注入清理计划：
 #    (crontab -l 2>/dev/null; echo "0 0 */3 * * > /www/wwwroot/vsys_monitor/vsys_run.log") | crontab -
