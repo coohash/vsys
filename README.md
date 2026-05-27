@@ -46,9 +46,6 @@ VSYS-Blockchain-Python-Code/
 ├── vsys_combined_docs.md            # 整合的Py使用说明书（AI 喂料使用）
 ├── VSYS_node_List.txt               # VSYS节点列表，使用前请先测试是否在线
 │
-├── balance.py                       # 生产环境：基于 asyncio + aiohttp 高并发异步地址余额批量读取脚本
-├── collect.py                       # 生产环境：全自动化多账户私钥资金归集引擎（含风控残留量控制与随机频控）
-│
 ├── Vanity_Address_Generator/        # VSYS区块链靓号地址生成
 │   ├── vanity_generator.py          # 寻找纯数字、特定单词等地址，可配置，自动导出地址和私钥
 │   ├── walletgenerator_v0.1.0.jar   # V Systems 钱包生成与恢复工具
@@ -62,6 +59,12 @@ VSYS-Blockchain-Python-Code/
 ├── vsys_balance_checker/            # VSYS余额批量查询
 │   ├── vsys_balance_checker.py      # VSYS区块链海量地址余额扫描，可配合用Excel记录历史余额情况
 │   └── list_address.csv             # 格式示例：VSYS钱包地址
+│
+├── vsys_lease_manager/              # VSYS批量租赁/取消租赁
+│   ├── vsys_lease_manager.py        # VSYS资产一键批量租赁（Lease）与流水退租（Cancel）
+│   ├── node.csv                     # 格式示例：超级节点地址
+│   ├── lease_add.csv                # 格式示例：需进行租赁的地址+私钥列表
+│   └── cancel_lease.csv             # 格式示例：需取消租赁的地址+私钥列表
 │
 └── data/                            # 数据层定义
     ├── list_address.csv             # 输入文件示例：待处理的钱包地址列表（每行一个标准地址）
