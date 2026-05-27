@@ -55,6 +55,10 @@ VSYS-Blockchain-Python-Code/
 │   └── 10000_VSYS_Address.txt       # 批量生成1万的VSYS地址和私钥的方法
 │   └── Run_the_example.png          # 运行示例
 │
+├── vsys_mass_transfer/              # VSYS批量转账
+│   ├── vsys_mass_transfer.py        # 使用私钥登录主钱包，按要求将金额批量分发到多个钱包
+│   └── recipients.csv               # 格式示例：接收钱包地址和金额列表
+│
 └── data/                            # 数据层定义
     ├── list_address.csv             # 输入文件示例：待处理的钱包地址列表（每行一个标准地址）
     ├── balance_address.csv          # 输出文件示例：高并发探测后自动生成的地址余额结果报表
