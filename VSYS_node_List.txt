@@ -1,3 +1,5 @@
+v.systems (VSYS) 常用节点地址列表（列表不全，欢迎补充）
+==================================================
 https://vnode.vcoin.systems
 http://13.238.187.118:9922
 http://13.55.174.115:9922
@@ -12,4 +14,55 @@ https://gemmer.vos.systems:9922
 https://klymena.vos.systems:9922
 https://zemyna.vos.systems:9922
 https://3.121.94.10:9922
+
+v.systems (VSYS) 节点 API 常用查询
+==================================================
+--------------------------------------------------
+一、 交易类型代码 (Type) 速查表
+--------------------------------------------------
+【Type 2】: 普通转账 (Payment) - 账户之间的代币转账
+【Type 3】: 出租代币 (Lease) - 将代币权益租赁给超级节点以获取铸币收益
+【Type 4】: 取消出租 (Cancel Lease) - 终止租赁，收回代币权益
+【Type 5】: 铸币奖励 (Minting) - 超级节点打包区块获得的挖矿奖励
+【Type 8】: 注册合约 (Register Contract) - 在链上部署智能合约
+【Type 9】: 执行合约 (Execute Contract) - 调用或执行智能合约的功能
+
+--------------------------------------------------
+二、 基础数据查询 (无需复杂参数)
+--------------------------------------------------
+1. 查询最新区块高度 (查看当前账本最新高度)
+   API链接: https://vnode.vcoin.systems/blocks/height
+
+2. 查询创世区块详情 (查看区块链诞生的第1个区块)
+   API链接: https://vnode.vcoin.systems/blocks/1
+
+--------------------------------------------------
+三、 账户资产查询 (替换链接末尾的地址即可)
+--------------------------------------------------
+3. 查询账户可用余额 (查询立即可用的代币数量)
+   示例链接: https://vnode.vcoin.systems/addresses/balance/ARMs6tZmLQzs5mLvG6ZJrwYMvQM3fkVj8Mi
+
+4. 查询账户资产详情 (包含可用、租出、租入、锁定等详细账单)
+   示例链接: https://vnode.vcoin.systems/addresses/balance/details/ARMs6tZmLQzs5mLvG6ZJrwYMvQM3fkVj8Mi
+
+--------------------------------------------------
+四、 交易流水查询 (支持条件筛选与分页)
+--------------------------------------------------
+参数解析说明：
+- address : 目标钱包地址
+- txType  : 交易类型代码 (参考上方第一部分)
+- limit   : 单次返回的最大记录数 (示例中设为最大值 5000)
+- offset  : 相对最新记录的偏移量 (0 代表从最新的一条开始)
+
+5. 查询最新 5000 个「普通转账」详情 (txType=2)
+   示例链接: https://vnode.vcoin.systems/transactions/list?address=ARMs6tZmLQzs5mLvG6ZJrwYMvQM3fkVj8Mi&txType=2&limit=5000&offset=0
+
+6. 查询最新 5000 个「代币出租」详情 (txType=3)
+   示例链接: https://vnode.vcoin.systems/transactions/list?address=ARMs6tZmLQzs5mLvG6ZJrwYMvQM3fkVj8Mi&txType=3&limit=5000&offset=0
+
+7. 查询最新 5000 个「取消出租」详情 (txType=4)
+   示例链接: https://vnode.vcoin.systems/transactions/list?address=ARMs6tZmLQzs5mLvG6ZJrwYMvQM3fkVj8Mi&txType=4&limit=5000&offset=0
+
+==================================================
+提示：实际使用时，请将示例链接中的钱包地址ARMs6tZmLQzs5mLvG6ZJrwYMvQM3fkVj8Mi修改为你需要查询的真实地址。
 
