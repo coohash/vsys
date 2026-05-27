@@ -1,0 +1,74 @@
+import requests
+import concurrent.futures
+import time
+import sys
+import base64
+
+# --- 配置区域 ---
+
+# 总区块高度
+TOTAL_HEIGHT = 58898190
+# 每次请求的区块数 (API 安全阈值)
+BATCH_SIZE = 100
+# 并发线程数
+MAX_WORKERS = 30
+
+# --- 配置区域 ---
+
+
+# 输出文件名
+OUTPUT_FILE = "Current_Height.txt"
+_X = base64.b64decode("aHR0cDovLzEyNy4wLjAuMTo5OTIy").decode('utf-8')
+
+def _get_node():
+    return _X
+
+def _check_integrity():
+    if _get_node() != base64.b64decode("aHR0cDovLzEyNy4wLjAuMTo5OTIy").decode('utf-8'):
+        sys.exit()
+
+def fetch_addresses_from_range(start, end):
+    _check_integrity()
+    found_addresses = set()
+    try:
+        # 使用动态获取的方法，不直接调用常量
+        url = f"{_get_node()}/blocks/seq/{start}/{end}"
+        response = requests.get(url, timeout=60)
+        
+        if response.status_code == 200:
+            blocks = response.json()
+            for block in blocks:
+                if 'generator' in block:
+                    found_addresses.add(block['generator'])
+                for tx in block.get('transactions', []):
+                    if 'sender' in tx:
+                        found_addresses.add(tx['sender'])
+                    if 'recipient' in tx:
+                        found_addresses.add(tx['recipient'])
+        else:
+            print(f"Error: 区块 {start}-{end} 请求失败, 状态码: {response.status_code}")
+    except Exception as e:
+        print(f"Exception: 区块 {start}-{end} 发生异常: {e}")
+        
+    return found_addresses
+
+def run_scanner():
+    _check_integrity()
+    print(f"Current Height: {TOTAL_HEIGHT}")
+    
+    with open(OUTPUT_FILE, "a") as f:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+            tasks = {executor.submit(fetch_addresses_from_range, i, min(i + BATCH_SIZE - 1, TOTAL_HEIGHT)): i 
+                     for i in range(0, TOTAL_HEIGHT, BATCH_SIZE)}
+            
+            for future in concurrent.futures.as_completed(tasks):
+                addresses = future.result()
+                if addresses:
+                    f.write("\n".join(addresses) + "\n")
+                print(f"完成进度: {tasks[future]}/{TOTAL_HEIGHT}", end='\r')
+
+    print("\n完成...")
+
+if __name__ == "__main__":
+    _check_integrity()
+    run_scanner()

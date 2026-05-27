@@ -1,0 +1,9 @@
+# * Database Generation Time: April 20, 2026 (After blockchain successfully runs, it will automatically sync remaining mainnet data)
+# * Locked Block Height:     58,062,043 Height
+# * Compressed Archive Size: ~25.66 GB (27,556,003,956 bytes)
+# * Applicable Network Env:  V Systems (VSYS) Mainnet
+# ------------------------------------------------------------------------------
+#
+# 📦 [Snapshot High-Speed Download Address]
+# ⚡ Baidu Network Disk Share Link: https://pan.baidu.com/s/1vSqozHRa6JdZAGD9spNgYQ?pwd=a9qv
+# 🔑 Extraction Code / Password:   a9qv
