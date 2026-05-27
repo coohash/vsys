@@ -65,7 +65,6 @@ When running the finalized Python code, it must connect to the VSYS "Node Interf
   [http://vakarine.vos.systems:9922](http://vakarine.vos.systems:9922)
   [http://wallet-node.v.systems:9922](http://wallet-node.v.systems:9922)
 
-
 🚀 Public nodes are not permanently stable and may become inaccessible or experience latency freezes at any time. Before using a specific node, please perform the following two manual check steps:
 
 🔍 Check if the interface is alive: Copy the node address directly into your browser to open it. If it successfully displays a green-and-white Swagger debugging page, the node is online.
