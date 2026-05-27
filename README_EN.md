@@ -17,6 +17,7 @@
 | [📂 vsys_balance_checker](#4-vsys_balance_checker) | **VSYS Batch Balance Query** | Scan balances of massive addresses on the VSYS blockchain | 
 | [📂 vsys_lease_manager](#5-vsys_lease_manager) | **VSYS Batch Lease/Cancel Lease** | One-click batch leasing and cancellation of leasing on VSYS | 
 | [📂 vsys_volume_booster](#6-vsys_volume_booster) | **VSYS On-Chain Activity Activation** | Used to simulate VSYS ecosystem liquidity | 
+| [📂 vsys_untraceable_mixer](#7-vsys_untraceable_mixer) | **VSYS Untraceable Mixer** | VSYS Untraceable Asset Distributor | 
 
 ---
 
@@ -40,6 +41,8 @@
 ### 6. `vsys_volume_booster`
 * **Function**: Used to simulate VSYS ecosystem liquidity, multi-tiered + 24-hour fully automated, transfer-collection self-looping
 
+### 7. `vsys_untraceable_mixer`
+* **Function**: VSYS Untraceable Asset Distributor (Asset shattering, mixing, cross-transferring, and re-aggregation)
 ---
 
 ## 📜 Disclaimer
@@ -110,6 +113,16 @@ VSYS-Blockchain-Python-Code/
 │   ├── vsys_volume_booster.py       # Multi-tiered 24/7 autonomous simulator with automated transfer-collection loop
 │   ├── translate_midd.csv           # Format template: Transit nodes [Address, Private Key]
 │   └── add_priv.csv                 # Format template: Independent collection end-nodes [Address, Private Key]
+│
+├── vsys_untraceable_mixer/          # VSYS Untraceable Mixer (Privacy Mixing Engine)
+│   ├── start.py                     # Launcher & Interactive User Interface
+│   ├── gen_ledger.py                # Parameter Configuration & Task Ledger Generator (Configure before launching)
+│   ├── vsys_untraceable_mixer.py    # VSYS Untraceable Asset Distributor (Asset shattering, mixing, cross-transferring, and re-aggregation)
+│   ├── sendlist.csv                 # Format Example: Final target recipient addresses (Your final asset beneficiary pool L6)
+│   ├── private.csv                  # Format Example: Available address & private key reserve pool (Used addresses will be deleted automatically)
+│   ├── recipients.csv               # Format Example: Pending address queue for the current batch
+│   ├── complete-send.csv            # Format Example: Historical archive of completed transfer addresses
+│   └── used.csv                     # Format Example: Historical deduplication archive of used addresses
 │
 └── vsys_mainnet_data/               # Module: VSYS Mainnet Node Data Snapshot Storage
     ├── data_20260420.tar.gz         # Mainnet blockchain database backup as of April 20, 2026 (Block Height: 58062043)
