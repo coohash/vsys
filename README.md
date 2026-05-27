@@ -28,6 +28,7 @@
 | [📂 `vsys_lease_manager`](#5-vsys_lease_manager) | **VSYS批量租赁/取消租赁** | VSYS一键批量租赁与取消租赁 | 
 | [📂 `vsys_volume_booster`](#6-vsys_volume_booster) | **VSYS链上活跃度激活** | 用于模拟VSYS生态流动性 | 
 | [📂 `vsys_untraceable_mixer`](#7-vsys_untraceable_mixer) | **VSYS隐私混币器** | VSYS链上防追踪资产分发 | 
+| [📂 `vsys_batch_sweeper`](#8-vsys_batch_sweeper) | **批量VSYS余额一键归集** | VSYS多地址余额批量汇总 | 
 
 ---
 
@@ -53,7 +54,9 @@
   
 ### 7. `vsys_untraceable_mixer`
 * **功能**：VSYS防追踪资产分发，资产打碎、混合、交叉互转、重新聚合
-
+  
+### 8. `vsys_batch_sweeper`
+* **功能**：批量将多个 VSYS 钱包账户的余额向指定目标地址进行自动归集
 ---
 
 ## 📜 Disclaimer
@@ -123,6 +126,10 @@ VSYS-Blockchain-Python-Code/
 ├── vsys_balance_checker/            # VSYS余额批量查询
 │   ├── vsys_balance_checker.py      # VSYS区块链海量地址余额扫描，可配合用Excel记录历史余额情况
 │   └── list_address.csv             # 格式示例：VSYS钱包地址
+│
+├── vsys_batch_sweeper/              # 批量VSYS余额一键归集
+│   ├── vsys_batch_sweeper.py        # 将分散在多个VSYS钱包中的资金进行统一汇总，并安全归集至指定钱包
+│   └── to-be-collected.csv          # 格式示例：等待归集汇总的VSYS钱包地址+私钥
 │
 ├── vsys_lease_manager/              # VSYS批量租赁/取消租赁
 │   ├── vsys_lease_manager.py        # VSYS资产一键批量租赁（Lease）与流水退租（Cancel）
