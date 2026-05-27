@@ -58,12 +58,12 @@ When running the finalized Python code, it must connect to the VSYS "Node Interf
 * 📋 Common Public Node Addresses List:
 
   ```text
-  [https://vnode.vcoin.systems](https://vnode.vcoin.systems)
-  [http://13.238.187.118:9922](http://13.238.187.118:9922)
-  [http://13.55.174.115:9922](http://13.55.174.115:9922)
-  [http://gabija.vos.systems:9922](http://gabija.vos.systems:9922)
-  [http://vakarine.vos.systems:9922](http://vakarine.vos.systems:9922)
-  [http://wallet-node.v.systems:9922](http://wallet-node.v.systems:9922)
+  https://vnode.vcoin.systems
+  http://13.238.187.118:9922
+  http://13.55.174.115:9922
+  http://gabija.vos.systems:9922
+  http://vakarine.vos.systems:9922
+  http://wallet-node.v.systems:9922
   ```
 🚀 Public nodes are not permanently stable and may become inaccessible or experience latency freezes at any time. Before using a specific node, please perform the following two manual check steps:
 
