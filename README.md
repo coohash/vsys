@@ -1,23 +1,33 @@
 <p align="right">
-  📌 <b>中文版</b> | <a href="./README_EN.md">English Version</a>
+  <a href="./README.md"><img src="https://img.shields.io/badge/📌%20中文版-0052FF?style=for-the-badge" alt="ZH"/></a>
+  <a href="./README_EN.md"><img src="https://img.shields.io/badge/🌐%20English%20Version-333333?style=for-the-badge" alt="EN"/></a>
 </p>
+
 # ⚡ VSYS Blockchain Python Code
 
-> **VSYS (V Systems) 区块链 Python 脚本仓库** > 示例脚本（如余额读取、资金归集、批量处理各种链上动作等）开发者可让AI参考（例如Gemini）按自己的需求修改Python代码。
+<p align="left">
+  <img src="https://img.shields.io/badge/python-3.8%2B-blue?style=flat-square&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/vsys--network-Mainnet-orange?style=flat-square" alt="VSYS"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"/>
+</p>
+
+> **VSYS (V Systems) 区块链 Python 脚本仓库**
+> 
+> 示例脚本（如余额读取、资金归集、批量处理各种链上动作等）开发者可让AI参考（例如Gemini）按自己的需求修改Python代码。
 
 ---
 
 ## 💡 功能目录 / Technical Modules
 
-| 代码 (Python) | 实现目标 (Role) | 特性说明 (Highlights)  |
+| 代码 (Python) | 实现目标 (Role) | 特性说明 (Highlights) |
 | :--- | :--- | :--- | 
-| [📂 vsys_supernode_install](#1-vsys_supernode_install) | **VSYS节点一键部署** | 自建节点使用，包含主网数据快照等 |
-| [📂 Vanity_Address_Generator](#2-vanity_address_generator) | **VSYS靓号地址生成** | 寻找纯数字、特定单词等地址 |
-| [📂 vsys_mass_transfer](#3-vsys_mass_transfer) | **VSYS批量转账** | 按要求将金额批量分发到多个钱包 | 
-| [📂 vsys_balance_checker](#4-vsys_balance_checker) | **VSYS余额批量查询** | VSYS区块链海量地址余额扫描 | 
-| [📂 vsys_lease_manager](#5-vsys_lease_manager) | **VSYS批量租赁/取消租赁** | VSYS一键批量租赁与取消租赁 | 
-| [📂 vsys_volume_booster](#6-vsys_volume_booster) | **VSYS链上活跃度激活** | 用于模拟VSYS生态流动性 | 
-| [📂 vsys_untraceable_mixer](#7-vsys_untraceable_mixer) | **VSYS隐私混币器** | VSYS链上防追踪资产分发 | 
+| [📂 `vsys_supernode_install`](#1-vsys_supernode_install) | **VSYS节点一键部署** | 自建节点使用，包含主网数据快照等 |
+| [📂 `Vanity_Address_Generator`](#2-vanity_address_generator) | **VSYS靓号地址生成** | 寻找纯数字、特定单词等地址 |
+| [📂 `vsys_mass_transfer`](#3-vsys_mass_transfer) | **VSYS批量转账** | 按要求将金额批量分发 to 多个钱包 | 
+| [📂 `vsys_balance_checker`](#4-vsys_balance_checker) | **VSYS余额批量查询** | VSYS区块链海量地址余额扫描 | 
+| [📂 `vsys_lease_manager`](#5-vsys_lease_manager) | **VSYS批量租赁/取消租赁** | VSYS一键批量租赁与取消租赁 | 
+| [📂 `vsys_volume_booster`](#6-vsys_volume_booster) | **VSYS链上活跃度激活** | 用于模拟VSYS生态流动性 | 
+| [📂 `vsys_untraceable_mixer`](#7-vsys_untraceable_mixer) | **VSYS隐私混币器** | VSYS链上防追踪资产分发 | 
 
 ---
 
@@ -43,6 +53,15 @@
   
 ### 7. `vsys_untraceable_mixer`
 * **功能**：VSYS防追踪资产分发，资产打碎、混合、交叉互转、重新聚合
+
+---
+
+## 📜 Disclaimer
+
+> [!IMPORTANT]
+> **资产安全红线说明**
+> 1. 本仓库中涉及的所有批量操作脚本，均在本地内存中执行离线签名，私钥绝对不会向任何网络节点传输。
+> 2. 由于脚本需要读取明文私钥，强烈建议在完全干净的电脑/服务器上运行。使用后请立即删除包含私钥的文件。
 
 ---
 
