@@ -66,7 +66,11 @@ VSYS-Blockchain-Python-Code/
 │   ├── lease_add.csv                # 格式示例：需进行租赁的地址+私钥列表
 │   └── cancel_lease.csv             # 格式示例：需取消租赁的地址+私钥列表
 │
-└── data/                            # 数据层定义
-    ├── list_address.csv             # 输入文件示例：待处理的钱包地址列表（每行一个标准地址）
-    ├── balance_address.csv          # 输出文件示例：高并发探测后自动生成的地址余额结果报表
-    └── vsys_snapshot.json           # 历史快照
+├── vsys_volume_booster/             # VSYS链上活跃度激活
+│   ├── vsys_volume_booster.py       # 用于模拟VSYS生态流动性，多层级+24小时全自动，转账归集自循环
+│   ├── translate_midd.csv           # 格式示例：中转站，地址+私钥列表
+│   └── add_priv.csv                 # 格式示例：独立，归集地址+私钥列表
+│
+└── data/                            # VSYS主网节点数据快照
+    ├── data_20260420.tar.gz         # 主网节点2026年4月20日数据压缩包（VSYS区块高度58062043）
+    └── data_20260420.tar.gz         # 压缩包大小约27G，无法上传，请参考vsys_supernode_install.txt获取
