@@ -6,8 +6,8 @@
 
 ## 🗂️ 核心核心功能目录 / Technical Modules Matrix
 
-| 模块组件 (Module) | 核心定位 (Role) | 技术特性 (Highlights) | 推荐场景 (Scenarios) |
-| :--- | :--- | :--- | :--- |
+| 模块组件 (Module) | 核心定位 (Role) | 技术特性 (Highlights)  |
+| :--- | :--- | :--- | 
 | [📂 vsys_supernode_install](#1-vsys_supernode_install) | **VSYS节点一键部署** | 自建节点使用，包含主网数据快照等 |
 | [📂 Vanity_Address_Generator](#2-vanity_address_generator) | **VSYS靓号地址生成** | 寻找纯数字、特定单词等地址 |
 | [📂 vsys_mass_transfer](#3-vsys_mass_transfer) | **VSYS批量转账** | 按要求将金额批量分发到多个钱包 | 
