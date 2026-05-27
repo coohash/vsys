@@ -147,3 +147,155 @@
 # ==============================================================================
 # FILE_END: supernode_install.txt
 # ==============================================================================
+
+# ==============================================================================
+# FILE_START: supernode_install.txt
+# DESCRIPTION: Deployment Guide for VSYS (V Systems) Blockchain Supernode/Full Node on Windows Systems
+# TECHNICAL_NOTE: This tutorial bridges the Ubuntu 18.04 production environment via Windows Subsystem 
+#                 for Linux (WSL2) technology, achieving seamless operation and block data 
+#                 synchronization of the 100% official native node.
+# ==============================================================================
+# Important Note: If you have not been exposed to Linux before, it is recommended to open Gemini simultaneously 
+# before operation and complete the deployment under AI guidance. The following content can be directly fed into the AI.
+
+# ==============================================================================
+# 🛰️ Phase 1: Build the Linux (Ubuntu) Base Runtime Environment on Windows
+# ==============================================================================
+#
+# [Step 1: Enable Windows Subsystem for Linux Features]
+# 1. Right-click the Windows "Start" button in the bottom left corner, select [Terminal (Admin)] or [PowerShell (Admin)] to open.
+# 2. Copy the command below into the window and press Enter (to enable the Linux Subsystem feature):
+#    dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+# 3. Immediately copy the command below and press Enter (to enable the Virtual Machine Platform feature):
+#    dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+# 4. [🔥 IMPORTANT]: After completing the above two steps, please [Restart] your Windows computer.
+#
+# [Step 2: One-Click Installation of the Ubuntu Operating System]
+# 1. After the computer restarts, open the [PowerShell (Admin)] window again.
+# 2. Input the following command to download and install the official Microsoft-recommended Ubuntu system with one click:
+#    wsl --install -d Ubuntu
+# 3. Wait for the progress bar to finish downloading. The system will automatically pop up a new black command-line window prompting "Installing, this may take a few minutes...".
+#
+# [Step 3: Set the Linux System Account and Password]
+# 1. In the pop-up black Ubuntu window, you will see the prompt: `Enter new UNIX username:` 
+#    -> Please input the username you want to set (e.g., `vsysadmin`), then press Enter.
+# 2. Next prompt: `New password:` 
+#    -> Please input your password, then press Enter. (Note: Linux will not display any asterisks or characters on the screen when typing a password; just type blindly).
+# 3. Prompt: `Retype new password:` 
+#    -> Input the password again and press Enter. Seeing the text "Installation successful!" means the Linux environment setup is completely successful!
+#
+# ==============================================================================
+# 🛠️ Phase 2: Enter the Linux System and Install the Official V Systems Full Node
+# ==============================================================================
+# 
+# Note: All subsequent commands must be executed inside the [Ubuntu black window] opened just now:
+#
+# [Step 1: Return to Home Directory and Upgrade Security Patches]
+# 1. Return to the current user's root directory:
+#    cd ~/
+# 2. Refresh the Linux software sources and upgrade security components (the system will prompt for the password you just set):
+#    sudo apt update && sudo apt upgrade -y
+#
+# [Step 2: Install Java Environment Dependent for VSYS Runtime]
+# 1. VSYS underlying architecture is built with Java language. Execute the command below to install the officially designated Headless runtime version of Java 8:
+#    sudo apt install -y openjdk-8-jre-headless
+# 2. Verify whether the Java installation is successful:
+#    java -version
+#    (If the output contains "openjdk version 1.8.x", it means completely correct)
+#
+# [Step 3: Download the Official V Systems Mainnet Installation Package]
+# 1. Use the wget command-line downloader to securely pull the v0.4.2 production-grade mainnet node installation package officially hosted on GitHub:
+#    wget https://github.com/virtualeconomy/v-systems/releases/download/v0.4.2/v_systems_0.4.2_mainnet.deb
+#
+# [Step 4: Unpack and Install the VSYS Node Service]
+# 1. Use the Debian package manager to directly extract and write the downloaded mainnet node into underlying system services:
+#    sudo dpkg -i v_systems_0.4.2_mainnet.deb
+#
+# ==============================================================================
+# ⚙️ Phase 3: Configure Your VSYS Supernode Parameters
+# ==============================================================================
+#
+# Architect Note: The official default storage path for ledgers, wallets, and blockchain historical data is: /var/lib/vsys/.vsys/
+# The configuration file is activated by default via symlink at: /etc/vsys/vsys.conf
+#
+# [Step 1: Open and Edit the Configuration File]
+# 1. Considering that novice users are unfamiliar with the complex `vi` editor, it is recommended to execute the following command to open the configuration using the relatively simple nano editor:
+#    sudo nano /etc/vsys/vsys.conf
+# 2. At this time, you can use the arrow keys on the keyboard to move the cursor up and down.
+# 3. If you want to change the storage path of the block ledger (for example, to a drive letter with larger space):
+#    Please locate the line `vsys { directory = ... }` and modify it to your customized path.
+#    Simultaneously, you can confirm `logging-level = DEBUG` to ensure the most detailed system operation logs are generated.
+# 4. [🔥 Method to Save and Exit]:
+#    After the modifications are completed, press the keyboard shortcut `Ctrl + O` (WriteOut), then press [Enter] to confirm.
+#    Then press the shortcut `Ctrl + X` to safely exit the editor.
+#
+# ==============================================================================
+# 🚀 Phase 4: Full Ignition! Start Your VSYS Node Service
+# ==============================================================================
+#
+# [Step 1: Set the Node to Enable on Boot]
+# 1. Register the Linux system service daemon to ensure the node automatically runs in the background when Windows or the subsystem starts:
+#    sudo systemctl enable vsys
+#
+# [Step 2: Formally Ignite and Start the VSYS Node]
+# 1. Execute the command below to start pulling and full synchronization of historical data blocks on the chain:
+#    sudo systemctl start vsys
+#
+# [Step 3: Monitor Supernode Runtime Logs in Real Time (Troubleshooting Freeze-ups)]
+# 1. As a senior architect, it is recommended to execute the following command after starting to enter the log stream monitoring state:
+#    journalctl -u vsys.service -f
+# 2. [O&M Observation Metrics]: If the screen starts to scroll and refresh at high frequency with text containing `DEBUG`, `Block`, `Height` increments,
+#    Congratulations! Your official V Systems mainnet node is running perfectly on your Windows computer and has begun synchronizing with global blockchain data!
+# 3. If you want to exit log monitoring, press `Ctrl + C` at any time to return to the regular terminal.
+# ==============================================================================
+# 🚀 Phase 5: [Core Acceleration Scheme] Fast Deployment Using Mainnet Blockchain Data Snapshot
+# ==============================================================================
+# 
+# VSYS Node Installation Tip:
+# If you feel that synchronizing historical data from scratch on the VSYS node is extremely slow (it may take several days depending on network conditions).
+# To avoid the long wait, you can use the pre-packaged "blockchain database snapshot". Replace it directly after downloading to achieve synchronization to the latest height within a few hours!
+#
+# 📋 [Snapshot Core Technical Metrics]
+# ------------------------------------------------------------------------------
+# * Database Generation Time: April 20, 2026 (After blockchain successfully runs, it will automatically sync remaining mainnet data)
+# * Locked Block Height:     58,062,043 Height
+# * Compressed Archive Size: ~25.66 GB (27,556,003,956 bytes)
+# * Applicable Network Env:  V Systems (VSYS) Mainnet
+# ------------------------------------------------------------------------------
+#
+# 📦 [Snapshot High-Speed Download Address]
+# ⚡ Baidu Network Disk Share Link: https://pan.baidu.com/s/1vSqozHRa6JdZAGD9spNgYQ?pwd=a9qv
+# 🔑 Extraction Code / Password:   a9qv
+#
+# 🛠️ [Four-Step Snapshot Recovery for Beginners (Must be executed inside the Ubuntu black window)]
+# ------------------------------------------------------------------------------
+#
+# [Step 1: Safely Shut Down the Running VSYS Node]
+# Before replacing database files, the node service must be completely shut down, otherwise it will cause database file corruption:
+# sudo systemctl stop vsys
+#
+# [Step 2: Clear and Prepare the Destination Directory]
+# Clear the incomplete old block data directory automatically generated by the system:
+# sudo rm -rf /var/lib/vsys/.vsys/data/*
+#
+# [Step 3: Extract and Copy Snapshot Files to Designated Directory]
+# 1. Please extract the downloaded compressed package on Windows. After extraction, you will get a folder named `data`.
+# 2. Input `\\wsl$` in the Windows File Explorer address bar and press Enter to directly see the Ubuntu file system.
+# 3. Copy all contents inside the extracted `data` folder and paste them directly into the following absolute path in Ubuntu:
+#    /var/lib/vsys/.vsys/data/
+# 4. Description: The step of importing the database, because it is importing into the Ubuntu system, is prone to encountering problems. If stuck at any step, it is recommended to take a screenshot and send it to Gemini to seek a solution.
+#
+# [Step 4: Correct File Permissions and Restart]
+# 1. Because the permissions of files copied from Windows will change, you must execute the command below to return permissions back to the vsys system user:
+#    sudo chown -R vsys:vsys /var/lib/vsys/.vsys/data
+#
+# 2. Re-ignite and start the node service:
+#    sudo systemctl start vsys
+#
+# 3. View the runtime logs again:
+#    journalctl -u vsys.service -f
+#    (You will find that the initial synchronization height of the node directly jumps to 58,062,043! Greatly saving your deployment time!)
+# ==============================================================================
+# ==============================================================================
+# FILE_END: supernode_install.txt
+# ==============================================================================
