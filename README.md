@@ -20,7 +20,6 @@ VSYS 区块链的Python代码示例，定位生产级、防卡死、具备底层
   http://gabija.vos.systems:9922
   http://vakarine.vos.systems:9922
   http://wallet-node.v.systems:9922
-
 * 公共节点不是永久稳定的，随时可能打不开或产生延迟卡死。在使用某个节点前，请务必进行以下两步人工检查：
   
   1. 🔍 检查接口是否活着：直接把节点地址复制到浏览器里打开。如果能顺利弹出一个绿白相间的 Swagger 调试页面，说明节点在线。
