@@ -14,12 +14,12 @@ VSYS 区块链的Python代码示例，定位生产级、防卡死、具备底层
 * 📋 常用公开节点地址一览：
 
   ```text
-  [https://vnode.vcoin.systems](https://vnode.vcoin.systems)
-  [http://13.238.187.118:9922](http://13.238.187.118:9922)
-  [http://13.55.174.115:9922](http://13.55.174.115:9922)
-  [http://gabija.vos.systems:9922](http://gabija.vos.systems:9922)
-  [http://vakarine.vos.systems:9922](http://vakarine.vos.systems:9922)
-  [http://wallet-node.v.systems:9922](http://wallet-node.v.systems:9922)
+  https://vnode.vcoin.systems
+  http://13.238.187.118:9922
+  http://13.55.174.115:9922
+  http://gabija.vos.systems:9922
+  http://vakarine.vos.systems:9922
+  http://wallet-node.v.systems:9922
 
 * 公共节点不是永久稳定的，随时可能打不开或产生延迟卡死。在使用某个节点前，请务必进行以下两步人工检查：
   
