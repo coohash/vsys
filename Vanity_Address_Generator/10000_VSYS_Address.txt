@@ -1,0 +1,32 @@
+使用walletgenerator_v0.1.0.jar生成批量地址
+
+📦 实用指令：一键批量生成 1 万个地址
+
+如果您需要大批量的测试或归集账户，只需运行以下命令，即可瞬间生成 1 万个 VSYS 地址、私钥及对应的助记词，并自动保存到 addresses.csv 文件中：
+
+java -jar walletgenerator_v0.1.0.jar -c 10000 -v
+
+运行以上命令后，你的屏幕会输出类似这样的结果
+------------------------------------------------------------------------------------------------------------------------------------------------------
+address #    : 9997
+address      : ARFam5seYCg1s6VonWxftZdgUHJF7TRXVEu
+public key   : 5XSTKpRYHuqkyukEi7FmWggBBwVX5DFg8X6djhhnNV9v
+private key  : 6woTL6ggSzYxoqSobeBTjz8tWow76yKPWG8rDgWST6zy
+account seed : GniBn3wxypxPNfmJhUZfGAFGR2aNUfgqnJaunw6UGtfq
+------------------------------------------------------------------------------------------------------------------------------------------------------
+address #    : 9998
+address      : ARDiKLeP9DD51acg8UigEpbs5SHS8kx5cQs
+public key   : 3Fs4J51Mhc8CFXKKA7nHVCsmqMxBzKLwzTtkgnQHCPLJ
+private key  : BEmiPSKiVtp4jGMGMnduGqNq456L3zyLFX9JR4m1BWLV
+account seed : 4bV2JctrqWZQiCQoVYamkuW7csqP2s1BiYcp75Qo5jQE
+------------------------------------------------------------------------------------------------------------------------------------------------------
+address #    : 9999
+address      : AR3vZeRetR2ced9TvEt8NbLKu62xR7teVdM
+public key   : Gy6sJMqsoSS3wM1wABbuvaSQYFfF3uYJcAqm1kmhHPPK
+private key  : 3A8Ge3uAGnbSKijJS5iMUobPrzBmmpprkMx5Li4xvSRd
+account seed : DKkM3CPKoXY8eAH5AWe2cEz9yM7QFngND7u1d13tep86
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+📋 补充说明：
+VSYS 区块链的助记词标准由 15 个英文单词组成。在区块链底层逻辑中，一组助记词（种子）可以生成无限个钱包地址。该命令的本质是帮您创建了一组全新的助记词，并连续推导出了该助记词下的前 10,000 个派生地址。
+如果你的Windows电脑没有安装java，遇到任何问题，请寻求Gemini的帮助，把所有文字贴给AI就行。
