@@ -18,6 +18,7 @@
 | [📂 vsys_lease_manager](#5-vsys_lease_manager) | **VSYS Batch Lease/Cancel Lease** | One-click batch leasing and cancellation of leasing on VSYS | 
 | [📂 vsys_volume_booster](#6-vsys_volume_booster) | **VSYS On-Chain Activity Activation** | Used to simulate VSYS ecosystem liquidity | 
 | [📂 vsys_untraceable_mixer](#7-vsys_untraceable_mixer) | **VSYS Untraceable Mixer** | VSYS Untraceable Asset Distributor | 
+| [📂 vsys_batch_sweeper](#8-vsys_batch_sweeper) | **Batch VSYS balance sweeper** | One-click batch VSYS balance consolidation | 
 
 ---
 
@@ -43,6 +44,9 @@
 
 ### 7. `vsys_untraceable_mixer`
 * **Function**: VSYS Untraceable Asset Distributor (Asset shattering, mixing, cross-transferring, and re-aggregation)
+
+### 8. `vsys_batch_sweeper`
+* **Function**: Aggregates funds scattered across multiple VSYS wallets and securely transfers them to a designated wallet
 ---
 
 ## 📜 Disclaimer
@@ -113,6 +117,10 @@ VSYS-Blockchain-Python-Code/
 │   ├── vsys_volume_booster.py       # Multi-tiered 24/7 autonomous simulator with automated transfer-collection loop
 │   ├── translate_midd.csv           # Format template: Transit nodes [Address, Private Key]
 │   └── add_priv.csv                 # Format template: Independent collection end-nodes [Address, Private Key]
+│
+├── vsys_batch_sweeper/              # Batch VSYS balance sweeper
+│   ├── vsys_batch_sweeper.py        # Consolidation script to securely sweep funds from multiple VSYS wallets to a designated address
+│   └── to-be-collected.csv          # Format example: VSYS wallet addresses and private keys to be swept
 │
 ├── vsys_untraceable_mixer/          # VSYS Untraceable Mixer (Privacy Mixing Engine)
 │   ├── start.py                     # Launcher & Interactive User Interface
