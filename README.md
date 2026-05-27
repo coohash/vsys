@@ -116,6 +116,16 @@ VSYS-Blockchain-Python-Code/
 │   ├── translate_midd.csv           # 格式示例：中转站，地址+私钥列表
 │   └── add_priv.csv                 # 格式示例：独立，归集地址+私钥列表
 │
+├── vsys_untraceable_mixer/          # VSYS隐私混币器
+│   ├── start.py                     # 启动+交互界面
+│   ├── gen_ledger.py                # 参数配置，生成任务清单（启动前请先进行设置）
+│   ├── vsys_untraceable_mixer.py    # VSYS防追踪资产分发，资产打碎、混合、交叉互转、重新聚合
+│   ├── sendlist.csv                 # 格式示例：最终收款目标地址列表，这是您的最终资产受益池L6。
+│   ├── private.csv                  # 格式示例：等待使用的，地址+私钥储备池，使用后的地址会自动删除
+│   ├── recipients.csv               # 格式示例：当前运行批次待处理名单
+│   ├── complete-send.csv            # 格式示例：已完成转账的历史地址归档
+│   └── used.csv                     # 格式示例：历史地址去重归档库
+│
 └── vsys_mainnet_data/               # VSYS主网节点数据快照
     ├── data_20260420.tar.gz         # 主网节点2026年4月20日数据压缩包（VSYS区块高度58062043）
     └── data_20260420.tar.gz         # 压缩包大小约27G，无法上传，请参考vsys_supernode_install.txt获取
