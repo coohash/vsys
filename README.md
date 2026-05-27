@@ -133,3 +133,7 @@ VSYS-Blockchain-Python-Code/
 └── vsys_mainnet_data/               # VSYS主网节点数据快照
     ├── data_20260420.tar.gz         # 主网节点2026年4月20日数据压缩包（VSYS区块高度58062043）
     └── data_20260420.tar.gz         # 压缩包大小约27G，无法上传，请参考vsys_supernode_install.txt获取
+
+![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![VSYS Network](https://img.systems/badge/VSYS-Mainnet-orange)
