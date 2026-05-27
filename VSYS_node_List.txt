@@ -66,3 +66,47 @@ v.systems (VSYS) 节点 API 常用查询
 ==================================================
 提示：实际使用时，请将示例链接中的钱包地址ARMs6tZmLQzs5mLvG6ZJrwYMvQM3fkVj8Mi修改为你需要查询的真实地址。
 
+### 🌍 VSYS P2P 核心超级节点网络拓扑矩阵 (Port 9921)
+
+以下为当前全球节点网络中，部分负责承载全网 P2P 数据流实时同步与区块广播的顶级超级节点清单。
+
+| 🖥️ 外部 IP 地址 | 📍 地理归属地 (主要运营商 / 区域) | ⚡ 拓扑连接状态 |
+| :--- | :--- | :--- |
+| `16.162.167.167` | **中国 香港** (Amazon Data Services) | 🟢 ESTABLISHED |
+| `18.163.147.204` | **中国 香港** (Amazon Data Services) | 🟢 ESTABLISHED |
+| `16.162.166.75`  | **中国 香港** (Amazon Data Services) | 🟢 ESTABLISHED |
+| `16.162.79.111`  | **中国 香港** (Amazon Data Services) | 🟢 ESTABLISHED |
+| `18.163.173.255` | **中国 香港** (Amazon Data Services) | 🟢 ESTABLISHED |
+| `13.113.98.91`   | **日本 东京** (Amazon Data Services) | 🟢 ESTABLISHED |
+| `13.55.174.115`  | **澳大利亚 悉尼** (Amazon Data Services) | 🟢 ESTABLISHED |
+| `188.40.96.183`  | **德国** (Hetzner Online GmbH) | 🟢 ESTABLISHED |
+| `3.121.94.10`    | **德国 法兰克福** (Amazon.com) | 🟢 ESTABLISHED |
+| `217.79.189.235` | **德国** (myLoc managed IT AG) | 🟢 ESTABLISHED |
+| `151.80.22.47`   | **法国** (OVH SAS) | 🟢 ESTABLISHED |
+| `51.158.150.234` | **法国 巴黎** (Scaleway) | 🟢 ESTABLISHED |
+| `195.154.223.169`| **法国** (Online SAS) | 🟢 ESTABLISHED |
+| `95.216.176.145` | **芬兰** (Hetzner Online GmbH) | 🟢 ESTABLISHED |
+| `192.99.34.61`   | **加拿大** (OVH SAS) | 🟢 ESTABLISHED |
+| `3.131.62.246`   | **美国 俄亥俄** (Amazon.com) | 🟢 ESTABLISHED |
+| `18.219.106.135` | **美国 俄亥俄** (Amazon.com) | 🟢 ESTABLISHED |
+| `3.136.217.188`  | **美国 俄亥俄** (Amazon.com) | 🟢 ESTABLISHED |
+| `3.135.79.14`    | **美国 俄亥俄** (Amazon.com) | 🟢 ESTABLISHED |
+| `3.139.135.88`   | **美国 俄亥俄** (Amazon.com) | 🟢 ESTABLISHED |
+| `44.199.108.252` | **美国 维吉尼亚** (Amazon.com) | 🟢 ESTABLISHED |
+| `3.88.80.177`    | **美国 维吉尼亚** (Amazon.com) | 🟢 ESTABLISHED |
+| `3.86.136.108`   | **美国 维吉尼亚** (Amazon.com) | 🟢 ESTABLISHED |
+| `54.147.87.141`  | **美国 维吉尼亚** (Amazon.com) | 🟢 ESTABLISHED |
+| `44.198.135.200` | **美国 维吉尼亚** (Amazon.com) | 🟢 ESTABLISHED |
+| `54.70.145.13`   | **美国 俄勒冈** (Amazon.com) | 🟢 ESTABLISHED |
+| `54.184.205.109` | **美国 俄勒冈** (Amazon.com) | 🟢 ESTABLISHED |
+| `44.233.5.150`   | **美国 俄勒冈** (Amazon.com) | 🟢 ESTABLISHED |
+| `35.163.251.252` | **美国 俄勒冈** (Amazon.com) | 🟢 ESTABLISHED |
+| `35.166.234.22`  | **美国 俄勒冈** (Amazon.com) | 🟢 ESTABLISHED |
+| `54.176.95.201`  | **美国 加州** (Amazon.com) | 🟢 ESTABLISHED |
+| `54.219.23.33`   | **美国 加州** (Amazon.com) | 🟢 ESTABLISHED |
+| `54.193.253.9`   | **美国 加州** (Amazon.com) | 🟢 ESTABLISHED |
+| `54.183.134.240` | **美国 加州** (Amazon.com) | 🟢 ESTABLISHED |
+| `52.8.165.228`   | **美国 加州** (Amazon.com) | 🟢 ESTABLISHED |
+
+> 💡 **运维工程提示**：自建全节点（Supernode）时，若发生 P2P 同步断链或区块悬挂死锁，可将上述高可用物理 IP 节点作为 `seed-node` 手动追加映射至 `/etc/vsys/vsys.conf` 拓扑流中，强行拉起内核态同步。
+
