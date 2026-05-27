@@ -154,5 +154,6 @@ VSYS-Blockchain-Python-Code/
 │
 └── vsys_mainnet_data/               # VSYS主网节点数据快照
     ├── data_20260420.tar.gz         # 主网节点2026年4月20日数据压缩包（VSYS区块高度58062043）
-    └── data_20260420.tar.gz         # 压缩包大小约27G，无法上传，请参考vsys_supernode_install.txt获取
+    ├── data_20260420.tar.gz         # 压缩包大小约27G，无法上传，请参考vsys_supernode_install.txt获取
+    └── vsys_address_snapshot        # 遍历与扫描区块，离线态的演化追踪，并解析交互
   ```
