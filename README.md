@@ -17,7 +17,7 @@
 
 ---
 
-## 💡 功能目录 / Technical Modules
+## 💡 功能目录 / V Systems
 
 | 代码 (Python) | 实现目标 (Role) | 特性说明 (Highlights) |
 | :--- | :--- | :--- | 
@@ -32,7 +32,7 @@
 
 ---
 
-## 🚀 Python代码功能详解 / Deep Dive
+## 🚀 Python代码功能详解 / V Systems
 
 ### 1. `vsys_supernode_install` 
 * **功能**：VSYS区块链节点安装（自建节点使用，包含主网数据快照等）
