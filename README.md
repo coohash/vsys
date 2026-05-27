@@ -12,18 +12,19 @@ VSYS 区块链的Python代码示例，定位生产级、防卡死、具备底层
 * 🛑 速度限制：公开节点是公共资源，为了防止服务器崩溃，建议代码请求速度不要超过 200次/秒（超过可能会被服务器封锁 IP）。
 
 * 📋 常用公开节点地址一览：
-  https://vnode.vcoin.systems
-  http://13.238.187.118:9922
-  http://13.55.174.115:9922
-  http://gabija.vos.systems:9922
-  http://vakarine.vos.systems:9922
-  http://wallet-node.v.systems:9922
+
+https://vnode.vcoin.systems
+http://13.238.187.118:9922
+http://13.55.174.115:9922
+http://gabija.vos.systems:9922
+http://vakarine.vos.systems:9922
+http://wallet-node.v.systems:9922
 
 * ⚠️ 避坑提示（使用前必看）：
   公共节点不是永久稳定的，随时可能打不开或产生延迟卡死。在使用某个节点前，请务必进行以下两步人工检查：
   
   1. 🔍 检查接口是否活着：直接把节点地址复制到浏览器里打开。如果能顺利弹出一个绿白相间的 Swagger 调试页面，说明节点在线。
-  2. 📊 检查数据是否同步：在节点地址后面加上 /blocks/height（例如：http://wallet-node.v.systems:9922/blocks/height）在浏览器里回车。看它返回的数字（当前区块高度），是否和 VSYS 官方区块链浏览器首页（https://explorer.v.systems）上的高度一致。如果数值一样，说明该节点数据是最新的，可以放心使用。
+  2. 📊 检查数据是否同步：在节点地址后面加上 /blocks/height 在浏览器里回车。看它返回的数字（当前区块高度），是否和 VSYS 官方区块链浏览器首页（https://explorer.v.systems）上的高度一致。如果数值一样，说明该节点数据是最新的，可以放心使用。
 
 --------------------------------------------------------------------------------
 ⚡ 2. 使用自建本地节点（极速、适合大规模使用）
