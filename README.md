@@ -4,9 +4,9 @@
 
 ---
 
-## 🗂️ 核心核心功能目录 / Technical Modules Matrix
+## 🗂️ 功能目录 / Technical Modules
 
-| 模块组件 (Module) | 核心定位 (Role) | 技术特性 (Highlights)  |
+| 代码 (Python) | 实现目标 (Role) | 特性说明 (Highlights)  |
 | :--- | :--- | :--- | 
 | [📂 vsys_supernode_install](#1-vsys_supernode_install) | **VSYS节点一键部署** | 自建节点使用，包含主网数据快照等 |
 | [📂 Vanity_Address_Generator](#2-vanity_address_generator) | **VSYS靓号地址生成** | 寻找纯数字、特定单词等地址 |
@@ -17,7 +17,7 @@
 
 ---
 
-## 🛠️ 模块详解与快速导航 / Deep Dive
+## 🛠️ Python代码功能详解 / Deep Dive
 
 ### 1. `vsys_supernode_install` 
 * **功能**：VSYS区块链节点安装（自建节点使用，包含主网数据快照等）
@@ -44,7 +44,7 @@
 1. **私钥红线**：本仓库中涉及的所有批量操作脚本，均在本地内存中通过底层密码学算法（Curve25519）执行离线签名，**私钥绝对不会向任何网络节点传输**。
 2. **资产防漏**：由于脚本需要读取明文私钥配置，强烈建议在完全干净的电脑/服务器上运行。使用后请立即转移资产并彻底粉碎销毁本地 CSV 配置文件。
 
-# 🌐 VSYS 节点接口 (API) 使用与测速指南
+## 🌐 VSYS 节点接口 (API) 
 
 写好的 Python 代码在运行时，必须连接 VSYS 的“节点接口（API）”才能获取链上数据。根据使用的是“免费公开节点”还是“自己搭建的节点”，其运行速度和配置方法大不相同：
 
