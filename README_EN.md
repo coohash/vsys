@@ -64,7 +64,7 @@ When running the finalized Python code, it must connect to the VSYS "Node Interf
   [http://gabija.vos.systems:9922](http://gabija.vos.systems:9922)
   [http://vakarine.vos.systems:9922](http://vakarine.vos.systems:9922)
   [http://wallet-node.v.systems:9922](http://wallet-node.v.systems:9922)
-
+  ```
 🚀 Public nodes are not permanently stable and may become inaccessible or experience latency freezes at any time. Before using a specific node, please perform the following two manual check steps:
 
 🔍 Check if the interface is alive: Copy the node address directly into your browser to open it. If it successfully displays a green-and-white Swagger debugging page, the node is online.
@@ -76,7 +76,7 @@ When running the finalized Python code, it must connect to the VSYS "Node Interf
 📍 Local Node Default Address: 127.0.0.1:9922
 
 # 📂 Repository Directory Structure
-
+```text
 VSYS-Blockchain-Python-Code/
 ├── .gitignore                       # Git ignore file configuration
 ├── README.md                        # This documentation file
@@ -114,3 +114,4 @@ VSYS-Blockchain-Python-Code/
 └── vsys_mainnet_data/               # Module: VSYS Mainnet Node Data Snapshot Storage
     ├── data_20260420.tar.gz         # Mainnet blockchain database backup as of April 20, 2026 (Block Height: 58062043)
     └── data_20260420.tar.gz         # Notice: Archive size is approx 27G; download instructions in vsys_supernode_install.txt
+```
