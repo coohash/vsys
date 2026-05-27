@@ -37,8 +37,9 @@ VSYS-Blockchain-Python-Code/
 ├── .gitignore                   # Git 忽略文件配置
 ├── README.md                    # 本说明文件
 ├── requirements.txt             # 依赖软件包列表（py-vsys, base58, aiohttp等）
-├── vsys_supernode_install.txt             # VSYS区块链节点安装（包含主网数据快照等）
-├── vsys_ai_context.txt             # 算法思维（AI 喂料使用）
+├── vsys_supernode_install.txt   # VSYS区块链节点安装（自建节点使用，包含主网数据快照等）
+├── vsys_ai_context.txt          # 算法思维（AI 喂料使用）
+├── vsys_combined_docs.md        # 整合的Py使用说明书（AI 喂料使用）
 │
 ├── balance.py                   # 生产环境：基于 asyncio + aiohttp 高并发异步地址余额批量读取脚本
 ├── collect.py                   # 生产环境：全自动化多账户私钥资金归集引擎（含风控残留量控制与随机频控）
