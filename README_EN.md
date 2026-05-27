@@ -65,7 +65,8 @@ When running the finalized Python code, it must connect to the VSYS "Node Interf
   [http://vakarine.vos.systems:9922](http://vakarine.vos.systems:9922)
   [http://wallet-node.v.systems:9922](http://wallet-node.v.systems:9922)
 
-  Public nodes are not permanently stable and may become inaccessible or experience latency freezes at any time. Before using a specific node, please perform the following two manual check steps:
+
+🚀 Public nodes are not permanently stable and may become inaccessible or experience latency freezes at any time. Before using a specific node, please perform the following two manual check steps:
 
 🔍 Check if the interface is alive: Copy the node address directly into your browser to open it. If it successfully displays a green-and-white Swagger debugging page, the node is online.
 
@@ -81,36 +82,36 @@ VSYS-Blockchain-Python-Code/
 ├── .gitignore                       # Git ignore file configuration
 ├── README.md                        # This documentation file
 ├── requirements.txt                 # Dependencies package list (py-vsys, base58, aiohttp, etc.)
-├── vsys_supernode_install.txt       # VSYS blockchain node installation (used for self-hosted nodes, includes mainnet data snapshots, etc.)
-├── vsys_ai_context.txt              # Algorithmic logic (used for AI feeding)
-├── vsys_combined_docs.md            # Consolidated Python user manual (used for AI feeding)
-├── VSYS_node_List.txt               # VSYS node list, please test if online before use
+├── vsys_supernode_install.txt       # VSYS node installation guide (for self-hosted node setup with snapshots)
+├── vsys_ai_context.txt              # Algorithmic logic & mental models (optimized for AI context feeding)
+├── vsys_combined_docs.md            # Consolidated Python user manual (optimized for AI context feeding)
+├── VSYS_node_List.txt               # List of public VSYS nodes (test connection before production use)
 │
-├── Vanity_Address_Generator/        # VSYS blockchain vanity address generation
-│   ├── vanity_generator.py          # Search for addresses containing pure numbers, specific words, etc., configurable, auto-exports addresses and private keys
-│   ├── walletgenerator_v0.1.0.jar   # V Systems wallet generation and recovery tool
-│   ├── 10000_VSYS_Address.txt       # Methodology for generating 10,000 VSYS addresses and private keys in batches
+├── Vanity_Address_Generator/        # Module: VSYS Blockchain Vanity Address Generation
+│   ├── vanity_generator.py          # Script to scan alphanumeric patterns; auto-exports keypairs
+│   ├── walletgenerator_v0.1.0.jar   # V Systems official offline wallet generation & recovery tool
+│   ├── 10000_VSYS_Address.txt       # Advanced guide: Batch generating 10,000 addresses & private keys
 │   └── Run_the_example.png          # Execution example screenshot
 │
-├── vsys_mass_transfer/              # VSYS batch transfer
-│   ├── vsys_mass_transfer.py        # Use private key to access the master wallet, distribute amounts in batches to multiple wallets according to requirements
-│   └── recipients.csv               # Format example: List of receiving wallet addresses and amounts
+├── vsys_mass_transfer/              # Module: VSYS High-Concurrency Batch Transfer
+│   ├── vsys_mass_transfer.py        # Core engine: Automated token distribution from master to multiple wallets
+│   └── recipients.csv               # Format template: [Recipient Address, Amount]
 │
-├── vsys_balance_checker/            # VSYS batch balance query
-│   ├── vsys_balance_checker.py      # Scan balances of massive addresses on the VSYS blockchain, can be paired with Excel to record historical balance statuses
-│   └── list_address.csv             # Format example: VSYS wallet addresses
+├── vsys_balance_checker/            # Module: VSYS Massive Address Balance Auditor
+│   ├── vsys_balance_checker.py      # High-speed asynchronous balance scanner with Excel reporting logs
+│   └── list_address.csv             # Format template: [Target Wallet Address] (one per line)
 │
-├── vsys_lease_manager/              # VSYS batch lease/cancel lease
-│   ├── vsys_lease_manager.py        # One-click batch leasing (Lease) and transactional withdrawal (Cancel) of VSYS assets
-│   ├── node.csv                     # Format example: Supernode addresses
-│   ├── lease_add.csv                # Format example: List of addresses + private keys requiring leasing
-│   └── cancel_lease.csv             # Format example: List of addresses + private keys requiring leasing cancellation
+├── vsys_lease_manager/              # Module: VSYS Batch Lease/Cancel Lease State-Machine
+│   ├── vsys_lease_manager.py        # Automates Type 3 (Lease) & Type 4 (Cancel) byte-stream broadcasting
+│   ├── node.csv                     # Format template: [Target Supernode Address]
+│   ├── lease_add.csv                # Format template: [Address, Private Key] for batch leasing
+│   └── cancel_lease.csv             # Format template: [Address, Private Key] for batch cancellation
 │
-├── vsys_volume_booster/             # VSYS on-chain activity activation
-│   ├── vsys_volume_booster.py       # Used to simulate VSYS ecosystem liquidity, multi-tiered + 24-hour fully automated, transfer-collection self-looping
-│   ├── translate_midd.csv           # Format example: Transit stations, address + private key list
-│   └── add_priv.csv                 # Format example: Independent, collection address + private key list
+├── vsys_volume_booster/             # Module: VSYS On-Chain Liquidity & Activity Activation
+│   ├── vsys_volume_booster.py       # Multi-tiered 24/7 autonomous simulator with automated transfer-collection loop
+│   ├── translate_midd.csv           # Format template: Transit nodes [Address, Private Key]
+│   └── add_priv.csv                 # Format template: Independent collection end-nodes [Address, Private Key]
 │
-└── vsys_mainnet_data/               # VSYS mainnet node data snapshot
-    ├── data_20260420.tar.gz         # Mainnet node data compressed package as of April 20, 2026 (VSYS block height 58062043)
-    └── data_20260420.tar.gz         # Archive size is approx. 27G, unable to upload, please refer to vsys_supernode_install.txt to acquire
+└── vsys_mainnet_data/               # Module: VSYS Mainnet Node Data Snapshot Storage
+    ├── data_20260420.tar.gz         # Mainnet blockchain database backup as of April 20, 2026 (Block Height: 58062043)
+    └── data_20260420.tar.gz         # Notice: Archive size is approx 27G; download instructions in vsys_supernode_install.txt
