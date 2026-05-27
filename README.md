@@ -48,7 +48,7 @@
 写好的 Python 代码在运行时，必须连接 VSYS 的“节点接口（API）”才能获取链上数据。根据使用的是“免费公开节点”还是“自己搭建的节点”，其运行速度和配置方法大不相同：
 
 --------------------------------------------------------------------------------
-📌 1. 使用免费公开节点（轻度使用）
+📌 1. ![Node](https://img.shields.io/badge/%E4%BD%BF%E7%94%A8VSYS%E5%85%AC%E5%BC%80%E8%8A%82%E7%82%B9-v1.2.0-blue?style=for-the-badge&logo=linux&logoColor=white)
 --------------------------------------------------------------------------------
 *  🚀 速度限制：公开节点是公共资源，为了防止服务器崩溃，建议代码请求速度不要超过 200次/秒。
 
@@ -147,8 +147,6 @@
 * 🚀 速度优势：如果是你在电脑或服务器上独立搭建的私有节点（具体搭建方式可参考项目内的 vsys_supernode_install.txt 说明文件），由于没有任何局域网外层网络限制，代码调用速度最高可飙升至 8000次/秒 以上！
 
 * 📍 本地节点默认地址：127.0.0.1:9922
-
-![Node](https://img.shields.io/badge/VSYS_Node-v1.2.0-blue?style=for-the-badge&logo=linux&logoColor=white)
 
 ![Security](https://img.shields.io/badge/Security-Local_Sign_Only-success?style=for-the-badge&logo=githubactions&logoColor=white)
 
