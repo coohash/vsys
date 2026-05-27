@@ -47,6 +47,7 @@ VSYS-Blockchain-Python-Code/
 ├── Vanity_Address_Generator/        # VSYS区块链靓号地址生成
 │   ├── vanity_generator.py          # 寻找纯数字、特定单词等地址，可配置，自动导出地址和私钥
 │   ├── walletgenerator_v0.1.0.jar   # V Systems 钱包生成与恢复工具
+│   └── 10000_VSYS_Address.txt       # 批量生成1万的VSYS地址和私钥的方法
 │   └── Run_the_example.png          # 运行示例
 │
 └── data/                            # 数据层定义
