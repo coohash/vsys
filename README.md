@@ -1,6 +1,6 @@
 <p align="right">
-  <a href="./README.md"><img src="https://img.shields.io/badge/中文版-FF7A00?style=for-the-badge&logo=translate&logoColor=white" alt="ZH"/></a>
-  <a href="./README_EN.md"><img src="https://img.shields.io/badge/English-7CB342?style=for-the-badge&logo=translate&logoColor=white" alt="EN"/></a>
+  <a href="./README.md"><img src="https://img.shields.io/badge/✨ 中文版-FF7A00?style=for-the-badge&logo=translate&logoColor=white" alt="ZH"/></a>
+  <a href="./README_EN.md"><img src="https://img.shields.io/badge/🌐 English Version-7CB342?style=for-the-badge&logo=translate&logoColor=white" alt="EN"/></a>
 </p>
 
 # ⚡ VSYS Blockchain Python Code
