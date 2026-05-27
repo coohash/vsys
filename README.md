@@ -6,7 +6,7 @@
 # ⚡ VSYS Blockchain Python Code
 
 <p align="left">
-  <img src="https://img.shields.io/badge/python-3.8%2B-blue?style=flat-square&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/python-3.1%2B-blue?style=flat-square&logo=python&logoColor=white" alt="Python"/>
   <img src="https://img.shields.io/badge/vsys--network-Mainnet-orange?style=flat-square" alt="VSYS"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"/>
 </p>
