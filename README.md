@@ -28,7 +28,7 @@
 | [📂 `vsys_lease_manager`](#5-vsys_lease_manager) | **VSYS批量租赁/取消租赁** | VSYS一键批量租赁与取消租赁 | 
 | [📂 `vsys_volume_booster`](#6-vsys_volume_booster) | **VSYS链上活跃度激活** | 用于模拟VSYS生态流动性 | 
 | [📂 `vsys_untraceable_mixer`](#7-vsys_untraceable_mixer) | **VSYS隐私混币器** | VSYS链上防追踪资产分发 | 
-| [📂 `vsys_batch_sweeper`](#8-vsys_batch_sweeper) | **批量VSYS余额一键归集** | VSYS多地址余额批量汇总 | 
+| [📂 `vsys_batch_sweeper`](#8-vsys_batch_sweeper) | **VSYS余额批量归集** | VSYS多地址余额批量汇总 | 
 
 ---
 
