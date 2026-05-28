@@ -27,7 +27,7 @@
 | [📂 `vsys_balance_checker`](#4-vsys_balance_checker) | **VSYS余额批量查询** | VSYS区块链海量地址余额扫描 | 
 | [📂 `vsys_lease_manager`](#5-vsys_lease_manager) | **VSYS批量租赁/取消租赁** | VSYS一键批量租赁与取消租赁 | 
 | [📂 `vsys_volume_booster`](#6-vsys_volume_booster) | **VSYS链上活跃度激活** | 用于模拟VSYS生态流动性 | 
-| [📂 `vsys_untraceable_mixer`](#7-vsys_untraceable_mixer) | **VSYS隐私混币器** | VSYS链上防追踪资产分发 | 
+| [📂 `vsys_untraceable_mixer`](#7-vsys_untraceable_mixer) | **VSYS多层隐私转账** | VSYS链上防追踪资产分发 | 
 | [📂 `vsys_batch_sweeper`](#8-vsys_batch_sweeper) | **VSYS余额批量归集** | VSYS多地址余额批量汇总 | 
 
 ---
@@ -142,7 +142,7 @@ VSYS-Blockchain-Python-Code/
 │   ├── translate_midd.csv           # 格式示例：中转站，地址+私钥列表
 │   └── add_priv.csv                 # 格式示例：独立，归集地址+私钥列表
 │
-├── vsys_untraceable_mixer/          # VSYS隐私混币器
+├── vsys_untraceable_mixer/          # VSYS多层隐私转账
 │   ├── start.py                     # 启动+交互界面
 │   ├── gen_ledger.py                # 参数配置，生成任务清单（启动前请先进行设置）
 │   ├── vsys_untraceable_mixer.py    # VSYS防追踪资产分发，资产打碎、混合、交叉互转、重新聚合
