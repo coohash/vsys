@@ -21,14 +21,14 @@
 
 | 代码 (Python) | 实现目标 (Role) | 特性说明 (Highlights) | 标签 (tag) |
 | :--- | :--- | :--- | :--- | 
-| [📂 `vsys_supernode_install`](#1-vsys_supernode_install) | **VSYS节点一键部署** | 自建节点方法，主网数据快照等 | 超级节点 Supernode 自建节点 |
-| [📂 `Vanity_Address_Generator`](#2-vanity_address_generator) | **VSYS靓号地址生成** | 寻找纯数字、特定单词等地址 | 靓号碰撞 海量地址 私钥导出 |
-| [📂 `vsys_mass_transfer`](#3-vsys_mass_transfer) | **VSYS批量转账** | 按要求将金额批量分发到多个钱包 | 批量转账 资产分发 私钥登录 |
-| [📂 `vsys_balance_checker`](#4-vsys_balance_checker) | **VSYS余额批量查询** | VSYS区块链海量地址余额扫描 | 海量扫描 余额查询 数据审计 |
-| [📂 `vsys_lease_manager`](#5-vsys_lease_manager) | **VSYS批量租赁/取消租赁** | VSYS一键批量租赁与取消租赁 | 批量租赁 流水退租 自动租赁 |
-| [📂 `vsys_volume_booster`](#6-vsys_volume_booster) | **VSYS链上活跃度激活** | 用于模拟VSYS生态流动性 | 生态活跃 流动性模拟 全自动循环  |
-| [📂 `vsys_untraceable_mixer`](#7-vsys_untraceable_mixer) | **VSYS多层隐私转账** | VSYS链上防追踪资产分发 | 多层级转账  防追踪分发 交叉互转 |
-| [📂 `vsys_batch_sweeper`](#8-vsys_batch_sweeper) | **VSYS余额批量归集** | VSYS多地址余额批量汇总 | 资金聚合 自动归集 余额扫平 |
+| <small>[📂 `vsys_supernode_install`](#1-vsys_supernode_install)</small> | <small>**VSYS节点一键部署**</small> | <small>自建节点方法，主网数据快照等</small> | <small>超级节点 Supernode 自建节点</small> |
+| <small>[📂 `Vanity_Address_Generator`](#2-vanity_address_generator)</small> | <small>**VSYS靓号地址生成**</small> | <small>寻找纯数字、特定单词等地址</small> | <small>靓号碰撞 海量地址 私钥导出</small> |
+| <small>[📂 `vsys_mass_transfer`](#3-vsys_mass_transfer)</small> | <small>**VSYS批量转账**</small> | <small>按要求将金额批量分发到多个钱包</small> | <small>批量转账 资产分发 私钥登录</small> |
+| <small>[📂 `vsys_balance_checker`](#4-vsys_balance_checker)</small> | <small>**VSYS余额批量查询**</small> | <small>VSYS区块链海量地址余额扫描</small> | <small>海量扫描 余额查询 数据审计</small> |
+| <small>[📂 `vsys_lease_manager`](#5-vsys_lease_manager)</small> | <small>**VSYS批量租赁/取消租赁**</small> | <small>VSYS一键批量租赁与取消租赁</small> | <small>批量租赁 流水退租 自动租赁</small> |
+| <small>[📂 `vsys_volume_booster`](#6-vsys_volume_booster)</small> | <small>**VSYS链上活跃度激活**</small> | <small>用于模拟VSYS生态流动性</small> | <small>生态活跃 流动性模拟 全自动循环</small> |
+| <small>[📂 `vsys_untraceable_mixer`](#7-vsys_untraceable_mixer)</small> | <small>**VSYS多层隐私转账**</small> | <small>VSYS链上防追踪资产分发</small> | <small>多层级转账 防追踪分发 交叉互转</small> |
+| <small>[📂 `vsys_batch_sweeper`](#8-vsys_batch_sweeper)</small> | <small>**VSYS余额批量归集**</small> | <small>VSYS多地址余额批量汇总</small> | <small>资金聚合 自动归集 余额扫平</small> |
 
 ---
 
@@ -38,14 +38,14 @@
 
 | # | 脚本/模块名称 | 功能分类 | 核心功能描述 |
 | :-: | :--- | :-: | :--- |
-| 1 | `vsys_supernode_install` | ⛓️ 私人节点 | VSYS 区块链超级节点一键安装（自建节点使用，包含主网数据快照等）。 |
-| 2 | `Vanity_Address_Generator` | 💎 靓号生成 | 寻找纯数字、特定单词等个性化地址，支持自主配置，自动导出地址与私钥。 |
-| 3 | `vsys_mass_transfer` | 💸 资产分发 | 使用私钥登录主钱包，按自定义要求将金额批量分发到多个目标钱包。 |
-| 4 | `vsys_balance_checker` | 💳 数据审计 | VSYS 区块链海量地址余额扫描，支持配合 Excel 记录与追踪历史余额情况。 |
-| 5 | `vsys_lease_manager` | 💰 权益租赁 | VSYS 资产一键批量租赁（Lease）与流水线式便捷退租（Cancel）。 |
-| 6 | `vsys_volume_booster` | 🔄 加活跃度 | 用于模拟 VSYS 生态流动性，支持多层级 + 24小时全自动转账归集自循环。 |
-| 7 | `vsys_untraceable_mixer` | 🔀 多层转账 | VSYS 防追踪资产分发，支持资产打碎、混合、交叉互转及重新聚合。 |
-| 8 | `vsys_batch_sweeper` | 📥 资产归集 | 批量将多个 VSYS 钱包账户的可用余额向指定的单一目标地址进行自动归集。 |
+| <small>1</small> | <small>`vsys_supernode_install`</small> | <small>⛓️ 私人节点</small> | <small>VSYS 区块链超级节点一键安装（自建节点使用，包含主网数据快照等）。</small> |
+| <small>2</small> | <small>`Vanity_Address_Generator`</small> | <small>💎 靓号生成</small> | <small>寻找纯数字、特定单词等个性化地址，支持自主配置，自动导出地址与私钥。</small> |
+| <small>3</small> | <small>`vsys_mass_transfer`</small> | <small>💸 资产分发</small> | <small>使用私钥登录主钱包，按自定义要求将金额批量分发到多个目标钱包。</small> |
+| <small>4</small> | <small>`vsys_balance_checker`</small> | <small>💳 数据审计</small> | <small>VSYS 区块链海量地址余额扫描，支持配合 Excel 记录与追踪历史余额情况。</small> |
+| <small>5</small> | <small>`vsys_lease_manager`</small> | <small>💰 权益租赁</small> | <small>VSYS 资产一键批量租赁（Lease）与流水线式便捷退租（Cancel）。</small> |
+| <small>6</small> | <small>`vsys_volume_booster`</small> | <small>🔄 加活跃度</small> | <small>用于模拟 VSYS 生态流动性，支持多层级 + 24小时全自动转账归集自循环。</small> |
+| <small>7</small> | <small>`vsys_untraceable_mixer`</small> | <small>🔀 多层转账</small> | <small>VSYS 防追踪资产分发，支持资产打碎、混合、交叉互转及重新聚合。</small> |
+| <small>8</small> | <small>`vsys_batch_sweeper`</small> | <small>📥 资产归集</small> | <small>批量将多个 VSYS 钱包账户的可用余额向指定的单一目标地址进行自动归集。</small> |
 
 ---
 
