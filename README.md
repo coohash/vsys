@@ -6,9 +6,11 @@
 # ⚡ VSYS Blockchain Python Code
 
 <p align="left">
-  <img src="https://img.shields.io/badge/python-3.1%2B-blue?style=flat-square&logo=python&logoColor=white" alt="Python"/>
-  <img src="https://img.shields.io/badge/vsys--network-Mainnet-orange?style=flat-square" alt="VSYS"/>
-  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"/>
+ <img src="https://img.shields.io/badge/vsys--network-Mainnet-orange?style=flat-square" alt="VSYS"/>
+ <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="VSYS"/>
+ <img src="https://img.shields.io/badge/python-3.10%20%7C%203.11-darkgreen.svg" alt="VSYS"/>
+ <img src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS-orange.svg" alt="VSYS"/>
+ <img src="https://img.shields.io/badge/Engine-Asynchronous%20State--Machine-blueviolet.svg" alt="VSYS"/>
 </p>
 
 > **VSYS (V Systems) 区块链 Python 零基础**
@@ -16,10 +18,8 @@
 > 本项目对编程零基础用户极度友好，通过 requirements.txt 提供的详细环境配置指南，即可快速运行全部 Python 代码。使用时建议打开AI（例如Gemini）排错或按自己的需求修改Python代码。
 
 ---
-## 💡 功能目录 / (vsystems)
 
-<details>
-<summary><b>📐 点击展开 / 收起功能目录表格</b></summary>
+## 💡 功能目录 / (vsystems)
 
 | 代码 (Python) | 实现目标 (Role) | 特性说明 (Highlights) | 标签 (tag) |
 | :--- | :--- | :--- | :--- | 
@@ -32,14 +32,11 @@
 | [📂 `vsys_untraceable_mixer`](#7-vsys_untraceable_mixer) | **VSYS多层隐私转账** | VSYS链上防追踪资产分发 | 多层级转账  防追踪分发 交叉互转 |
 | [📂 `vsys_batch_sweeper`](#8-vsys_batch_sweeper) | **VSYS余额批量归集** | VSYS多地址余额批量汇总 | 资金聚合 自动归集 余额扫平 |
 
-</details>
-
 ---
 
 ## 🚀 Python代码功能详解 (V Systems)
 
-<details>
-<summary><b>📐 点击展开 / 收起核心功能详解表格</b></summary>
+本项目包含一系列针对 VSYS (V Systems) 区块链开发的 Python 自动化与生态工具。以下是核心功能模块概览：
 
 | # | 脚本/模块名称 | 功能分类 | 核心功能描述 |
 | :-: | :--- | :-: | :--- |
@@ -52,9 +49,8 @@
 | 7 | `vsys_untraceable_mixer` | 🔀 多层转账 | VSYS 防追踪资产分发，支持资产打碎、混合、交叉互转及重新聚合。 |
 | 8 | `vsys_batch_sweeper` | 📥 资产归集 | 批量将多个 VSYS 钱包账户的可用余额向指定的单一目标地址进行自动归集。 |
 
-</details>
-
 ---
+
 ## 🌐 VSYS 节点接口 (API) 
 
 写好的 Python 代码在运行时，必须连接 VSYS节点API才能获取链上数据。根据使用的是“公开节点”还是“自建节点”，其运行速度大不相同：
