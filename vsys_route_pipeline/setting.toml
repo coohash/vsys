@@ -1,0 +1,148 @@
+# ==============================================================================
+# 🛰️ VSYS Blockchain Asset Route Pipeline - Production Configuration Matrix
+# 文件名: setting.toml
+# 描述: 资产自动化路由与非线性管道流转全量配置文件（全数字、全时序可调）
+# ==============================================================================
+
+[network_core]
+# VSYS 区块链节点 RPC API 路由地址
+node_url = "http://172.25.187.177:9922"
+# 网络物理标识：'M' 代表主网 (Mainnet)，'T' 代表测试网 (Testnet)
+network_byte = "M"
+# VSYS 底层原生交易标准固定手续费 (0.1 VSYS = 10,000,000 Satoshi)
+base_fee_satoshi = 10000000
+# 费率比例 (Fee Scale)，底层字节序列化硬编码固定为 100
+fee_scale = 100
+# 异步高并发网络请求限制（理想区间 150 - 300）
+concurrency_limit = 150
+# 网络请求暂态失败后，异步重试延迟时间范围（单位：秒）
+retry_delay_min = 0.5
+retry_delay_max = 2.0
+
+[control_gating]
+# 核心规则12：是否强制只运行终端 B 守护进程 (true: 直接启动沙漏 ； false: 执行A后自动转B)
+only_run_b = false
+# 核心规则6：初始入金前置拦截安全冗余系数 (判断: 初始入金 > 预留粉尘总额 + 预估手续费总额 * 冗余系数)
+safety_redundancy_factor = 1.5
+# 核心规则8：队列错误隔离保护，单步动作报错跳过后，自动下一步之前的安全冷却间隔（单位：秒）
+error_skip_delay_min = 3.0
+error_skip_delay_max = 5.0
+
+[l0_root_account]
+# 核心 L0 根资产初始入金物理地址与离线私钥
+address = "ARRfwY4cJNJBBHjHxKm5YVbuUSPvvV2WdMR"
+private_key = "3kFxJqep9y4qcBLuaSTRqLgqzQZwVZ9mCxCp5FwCyn6Z"
+# 核心规则13：初始默认注入资产规模总额 (单位: VSYS)
+initial_balance_vsys = 2000000.0
+
+[dust_policy]
+# 核心规则2：各中间流转临时账户（除L8, L15外）执行清扫时，物理强制留存的随机粉尘资产范围 (单位: VSYS)
+min_dust_vsys = 1.0
+max_dust_vsys = 10.0
+
+[burn_interference]
+# 核心规则4：黑洞干扰池 CSV 相对物理路径 (无标题，一行一个盲收地址)
+csv_path = "Burn_address.csv"
+# 汇入黑洞地址的随机金额上下限范围 (必须严格限制在 < 1.0 VSYS)
+min_burn_amount_vsys = 0.01
+max_burn_amount_vsys = 0.99
+
+[supernodes_pool]
+# 核心规则5：硬编码内置的 15 个官方超级节点物理池地址
+# 凡涉及 Type 3 权益租赁动作，均随机命中以下地址，并在极短时间内发送 Type 4 瞬时解约报文留痕
+node_list = [
+    "ARAyzTJewPDkTy2SgoS4GAUc6Y6ugKpL5uu",
+    "ARHYw3NUCi1s21VU6rNn6hyhtsU7BmF8CVe",
+    "ARCXQ8R4a4B84cdcf6BrM4fXJ8SjhEM5hZG",
+    "ARBQTCYws5FZAVtA1ZFLsGhBtPymr4Hp5CX",
+    "ARCakrkATHDjvjjZJCuSWYx6keGsENMzSg3",
+    "ARCVpcq2i6rQ7kkzNeJ1jsMec6TLmC7RNHn",
+    "ARE4NmwpsFYb1gkUnzATHQqwB6GoG4mmYS5",
+    "ARFW9By8BkDuNdnC1M4AbRN1DV4u6AMWWSw",
+    "ARCqaJDRd61zf6WZwivcXhGqqvwxVgt4MsQ",
+    "AR95ZdHV3Wx759r5io7gmb2GUz9vRtFF1F8",
+    "ARBFMJMgvFS1yjRpt2DL7QNrLD6tV6Mxdqr",
+    "ARRiBVZAcn4Bo2LabYMpyZVUbzMCbb6pnRR",
+    "ARQNgdvu82J5hMF2UiKKoygxcH8p3KbRPm7",
+    "ARMxBgdVMnvZACBukdibYCH1wwSwmky3eS1",
+    "ARQMBHddpiPTFjMipnU4h5xfiY6kgYrXXc9"
+]
+
+[terminal_a_topology]
+# 终端 A 线性级联裂变推进期间，单步原子划转动作之间的随机延迟时间间隔（单位：秒）
+interval_min = 1.0
+interval_max = 4.0
+
+# L1 层级：初始裂变目标物理路径数量 (对应 L1.csv 行数)
+l1_split_count = 9
+
+# L2 层级：级联裂变目标账户数、内部无序乱序互转次数、注入黑洞动作次数
+l2_split_count = 300
+l2_inter_transfers = 3000
+l2_burn_txs = 500
+
+# L3 层级：爆发大裂变目标账户数、内部极高频混淆清洗互转次数
+l3_split_count = 3000
+l3_inter_transfers = 30000
+
+# L4 层级：漏斗收敛目标账户通道数、内部乱序对流次数、注入黑洞动作次数
+l4_convergence_count = 100
+l4_inter_transfers = 3000
+l4_burn_txs = 500
+
+# L5 & L6 混合层级：网状自循环系统双向物理账户规模
+l5_pool_size = 500
+l6_pool_size = 5000
+# 循环转账密集脉冲计数器设置
+l5_to_l6_pulse_count = 20000
+l6_to_l5_pulse_count = 5000
+
+# L7 层级：双层全面归集过载物理通道账户数、同层乱序大额互转次数
+l7_convergence_count = 200
+l7_inter_transfers = 3000
+
+# L8 层级：核心大蓄水总池最终物理地址容积总量 (对应 L8.csv 行数，长效保护不执行余额清扫)
+l8_total_pool_size = 30000
+
+[terminal_b_matrix]
+# 核心规则13：终端 B 动态沙漏状态机守护进程核心配置指标
+target_amount_m = 1000000.0        # 本次最终归集渗透出场的目标总金额 M (单位: VSYS)
+target_address_n = 200             # 本次精确定位使用的出场物理通道数量 N
+
+# 宏观财务对账截断容差控制
+macro_error_margin = 0.01          # 最终总额与 M 的允许累计统计学对账误差（0.01 = 1%）
+l9_target_random_range = 0.20      # L9 分配期望时的非整数上下权重离散随机振幅（0.20 = ±20%）
+
+# 核心规则9：从 L8 水库大总池执行异步非线性抽水泵送时，单次榨取原地址可用余额的百分比范围
+l8_extract_rate_min = 0.20
+l8_extract_rate_max = 0.50
+
+# 核心规则9/10：状态机调度进程轮询整个 L9-L14 资金池 Loop 循环之间的异步随机睡眠延迟（单位：秒）
+loop_delay_min = 2.0
+loop_delay_max = 13.0
+
+# 局部层级混淆摩擦强度设置（基于出场通道数 N 的倍数动态扩展可调）
+l10_inter_transfer_multiplier = 10   # L10 内部同层无序盲转次数 = 10 * N (即 2000 次)
+l11_inter_transfer_multiplier = 40   # L11 内部同层高速互转次数 = 40 * N (即 8000 次)
+l13_inter_transfer_multiplier = 320  # L13 内部高密摩擦洗净次数 = 320 * N (即 64000 次)
+l13_burn_txs = 500                   # L13 内部对流中向黑洞抛洒微额噪点的动作次数
+
+# 逆流回灌蓄水阀与非对称顺流下泄静态比例系数
+l10_backflow_rate_to_l8 = 0.20       # L10 异步回拨至 L8 总池的累计资金占入金总量的比例
+l11_backflow_rate_to_l8 = 0.20       # L11 异步回拨至 L8 总池的累计资金占入金总量的比例
+l12_leak_rate_to_l15 = 0.30          # L12 跨层打破常规、横向直接渗出注入最终终点港 L15的比例
+l12_forward_rate_to_l13 = 0.70       # L12 顺流正常重力下泄至 L13 缓冲层的比例
+l13_leak_rate_to_l15 = 0.50          # L13 再次横向直接剥离渗出、滑入最终终点港 L15的比例
+l13_forward_rate_to_l14 = 0.50       # L13 顺流正常重力下泄至 L14 漩涡矩阵的比例
+
+# 核心规则14：L14 漩涡矩阵强力多路径逆流举升概率参数（分配权重合计必须等于 1.0 闭环）
+l14_leak_path_a_rate = 0.20          # 路径A: 顺流最后一步前行，直接滑入终点港 L15 的概率
+l14_vortex_path_b_rate = 0.60        # 路径B: 一级漩涡重力逆流举升，强行退回推返 L13 的概率
+l14_vortex_path_c_rate = 0.20        # 路径C: 二级漩涡跨级逆流举升，强行重力逆转退回 L12 的概率
+
+[convergence_conditions]
+# 核心规则11：两极平滑收敛退出机制阈值
+# 条件一：中间缓冲层级 (L12+L13+L14) 在线账面总余额低于此界限（资产已被高频颠簸完全甩干），打印 [渗透完毕] 并安全退出 (VSYS)
+dry_pool_threshold_vsys = 1000.0
+# 条件二：L15 终点渗透接收总港累计到账量占总目标 M 的宏观百分比线，达到后判定完成，平滑断开 Loop 退出
+completion_rate_trigger = 0.96
