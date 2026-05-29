@@ -13,8 +13,8 @@ network_byte = "M"
 base_fee_satoshi = 10000000
 # 费率比例 (Fee Scale)，底层字节序列化硬编码固定为 100
 fee_scale = 100
-# 异步高并发网络请求限制（理想区间 150 - 300）
-concurrency_limit = 150
+# 异步高并发网络请求限制（理想区间 3 - 15）
+concurrency_limit = 2
 # 网络请求暂态失败后，异步重试延迟时间范围（单位：秒）
 retry_delay_min = 0.5
 retry_delay_max = 2.0
@@ -49,7 +49,7 @@ max_burn_amount_vsys = 0.99
 
 [supernodes_pool]
 # 核心规则5：硬编码内置的 15 个官方超级节点物理池地址
-# 凡涉及 Type 3 权益租赁动作，均随机命中以下地址，并在极短时间内发送 Type 4 瞬时解约报文留痕
+# 凡涉及 Type 3 权益租赁动作，均随机命中以下地址，并在设定时间内发送 Type 4 瞬时解约报文留痕
 node_list = [
     "ARAyzTJewPDkTy2SgoS4GAUc6Y6ugKpL5uu",
     "ARHYw3NUCi1s21VU6rNn6hyhtsU7BmF8CVe",
