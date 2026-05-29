@@ -89,8 +89,8 @@
   ```
 * 公共节点不是永久稳定的，使用前，请务必进行以下两步人工检查：
   
-<sub>1. 🔍 检查接口是否活着：直接把节点地址复制到浏览器里打开。能打开 Swagger页面，说明节点在线。</sub>
-<sub>2. 🔍 检查数据是否同步：在节点地址后面加上 /blocks/height ”获取区块高度，若与 VSYS 官网浏览器（explorer.v.systems）一致，即为最新，可放心使用。</sub>
+   <sub>1. 🔍 检查接口是否活着：直接把节点地址复制到浏览器里打开。能打开 Swagger页面，说明节点在线。</sub><br/>
+   <sub>2. 🔍 检查数据是否同步：在节点地址后面加上 /blocks/height ”获取区块高度，若与 VSYS 官网浏览器（explorer.v.systems）一致，即为最新，可放心使用。</sub>
 
 --------------------------------------------------------------------------------
 ![Security](https://img.shields.io/badge/VSYS%20node-%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E8%87%AA%E5%BB%BAVSYS%E8%8A%82%E7%82%B9-success?style=for-the-badge&logo=githubactions&logoColor=white)
