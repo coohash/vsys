@@ -9,9 +9,7 @@ An industrial-grade, ultra-high confusion asset routing pipeline designed specif
 ---
 
 ### ⚡ 核心依赖安装 (Installation)
-确保本地环境包含原生异步网络扩展以及 Base58 编解码套件：
-```bash
-pip3 install aiohttp base58 click cryptography
+确保本地环境包含原生异步网络扩展以及 Base58 编解码套件：pip3 install aiohttp base58 click cryptography
 
 # 🛰️ VSYS Asset Route Pipeline (`vsys_route_pipeline.py`)
 
