@@ -59,7 +59,58 @@ An industrial-grade, ultra-high confusion asset routing pipeline designed specif
 ## 💡 二、 系统流转拓扑架构（L0 $\rightarrow$ L15 全层级工艺流程）
 
 系统的整体物理演进拓扑由两大核心部分组成：**终端 A（线性多级指数裂变大水库）** 与 **终端 B（非线性沙漏守护进程状态机）**。
+```mermaid
+graph TD
+    %% 样式定义
+    classDef terminal fill:#2d3748,stroke:#a0aec0,stroke-width:2px,color:#fff;
+    classDef blast fill:#742a2a,stroke:#e53e3e,stroke-width:1px,color:#fff;
+    classDef loop fill:#2b6cb0,stroke:#4299e1,stroke-width:1px,color:#fff;
+    classDef final fill:#2c5282,stroke:#3182ce,stroke-width:2px,color:#fff;
 
+    %% 终端 A
+    subgraph Terminal_A [ 终端 A - 指数级爆破洗净 ]
+        L0[L0 根资产进场] -->|9 分裂| L1[L1 余额清扫]
+        L0 -->|300 分裂| L2[L2 3000次互转 + 500次黑洞]
+        L0 -->|3000 分裂| L3[L3 30000次互转 + 尾部黑洞清扫]
+        L0 -->|100 汇聚| L4[L4 3000次互转 + 100%租赁痕迹]
+        L0 -->|500 扩散| L5[L5 扩散层]
+        
+        L5 --> L6[L6 对流层]
+        L6 -->|20000次/5000次 高维网状对流| L5
+        
+        L1 & L2 & L3 & L4 & L6 --> L7[L7 200节点 + 3000次互转 双层清扫归集]
+        L7 --> L8[L8 30000蓄水池大总池 全量灌注]
+    end
+
+    %% 跨阶段抽水
+    L8 -->|异步非线性抽水| L9
+
+    %% 终端 B
+    subgraph Terminal_B [ 终端 B - 沙漏型多路径状态机 ]
+        L9[L9 N个节点精确定位] --> L10[L10 2N节点 + 10N次互转]
+        L10 -->|反向回灌 20%| L9
+        
+        L10 --> L11[L11 4N节点 + 40N次互转]
+        L11 -->|反向回灌 20%| L10
+        
+        L11 --> L12[L12 8N节点]
+        
+        L12 -->|70% 顺流| L13[L13 80N节点 + 320N次互转]
+        L13 -->|20% 逆流举升| L11
+        
+        L13 -->|50% 顺流| L14[L14 60N节点]
+        L14 -->|60% 逆流举升| L10
+        
+        L14 -->|20% 顺流| L15[L15 终点渗透接收港]
+        L14 -->|30% 渗出| M[M 资产归集]
+    end
+
+    %% 样式应用
+    class Terminal_A,Terminal_B terminal;
+    class L1,L2,L3 blast;
+    class L5,L6,L10,L11,L13 loop;
+    class L15,M final;
+```
   ```text
 [ 终端 A - 指数级爆破洗净 ]
 L0 (根资产进场)
