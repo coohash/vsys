@@ -18,133 +18,41 @@
 ---
 ## 💡 功能目录 / (vsystems)
 
-<table>
-  <thead>
-    <tr>
-      <th>代码 (Python)</th>
-      <th>实现目标 (Role)</th>
-      <th>特性说明 (Highlights)</th>
-      <th>标签 (tag)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><small><a href="#1-vsys_supernode_install">📂 <code>vsys_supernode_install</code></a></small></td>
-      <td><small><strong>VSYS节点一键部署</strong></small></td>
-      <td><small>自建节点方法，主网数据快照等</small></td>
-      <td><small>超级节点 Supernode 自建节点</small></td>
-    </tr>
-    <tr>
-      <td><small><a href="#2-vanity_address_generator">📂 <code>Vanity_Address_Generator</code></a></small></td>
-      <td><small><strong>VSYS靓号地址生成</strong></small></td>
-      <td><small>寻找纯数字、特定单词等地址</small></td>
-      <td><small>靓号碰撞 海量地址 私钥导出</small></td>
-    </tr>
-    <tr>
-      <td><small><a href="#3-vsys_mass_transfer">📂 <code>vsys_mass_transfer</code></a></small></td>
-      <td><small><strong>VSYS批量转账</strong></small></td>
-      <td><small>按要求将金额批量分发到多个钱包</small></td>
-      <td><small>批量转账 资产分发 私钥登录</small></td>
-    </tr>
-    <tr>
-      <td><small><a href="#4-vsys_balance_checker">📂 <code>vsys_balance_checker</code></a></small></td>
-      <td><small><strong>VSYS余额批量查询</strong></small></td>
-      <td><small>VSYS区块链海量地址余额扫描</small></td>
-      <td><small>海量扫描 余额查询 数据审计</small></td>
-    </tr>
-    <tr>
-      <td><small><a href="#5-vsys_lease_manager">📂 <code>vsys_lease_manager</code></a></small></td>
-      <td><small><strong>VSYS批量租赁/取消租赁</strong></small></td>
-      <td><small>VSYS一键批量租赁与取消租赁</small></td>
-      <td><small>批量租赁 流水退租 自动租赁</small></td>
-    </tr>
-    <tr>
-      <td><small><a href="#6-vsys_volume_booster">📂 <code>vsys_volume_booster</code></a></small></td>
-      <td><small><strong>VSYS链上活跃度激活</strong></small></td>
-      <td><small>用于模拟VSYS生态流动性</small></td>
-      <td><small>生态活跃 流动性模拟 全自动循环</small></td>
-    </tr>
-    <tr>
-      <td><small><a href="#7-vsys_untraceable_mixer">📂 <code>vsys_untraceable_mixer</code></a></small></td>
-      <td><small><strong>VSYS多层隐私转账</strong></small></td>
-      <td><small>VSYS链上防追踪资产分发</small></td>
-      <td><small>多层级转账 防追踪分发 交叉互转</small></td>
-    </tr>
-    <tr>
-      <td><small><a href="#8-vsys_batch_sweeper">📂 <code>vsys_batch_sweeper</code></a></small></td>
-      <td><small><strong>VSYS余额批量归集</strong></small></td>
-      <td><small>VSYS多地址余额批量汇总</small></td>
-      <td><small>资金聚合 自动归集 余额扫平</small></td>
-    </tr>
-  </tbody>
-</table>
+<details>
+<summary><b>📐 点击展开 / 收起功能目录表格</b></summary>
+
+| 代码 (Python) | 实现目标 (Role) | 特性说明 (Highlights) | 标签 (tag) |
+| :--- | :--- | :--- | :--- | 
+| [📂 `vsys_supernode_install`](#1-vsys_supernode_install) | **VSYS节点一键部署** | 自建节点方法，主网数据快照等 | 超级节点 Supernode 自建节点 |
+| [📂 `Vanity_Address_Generator`](#2-vanity_address_generator) | **VSYS靓号地址生成** | 寻找纯数字、特定单词等地址 | 靓号碰撞 海量地址 私钥导出 |
+| [📂 `vsys_mass_transfer`](#3-vsys_mass_transfer) | **VSYS批量转账** | 按要求将金额批量分发到多个钱包 | 批量转账 资产分发 私钥登录 |
+| [📂 `vsys_balance_checker`](#4-vsys_balance_checker) | **VSYS余额批量查询** | VSYS区块链海量地址余额扫描 | 海量扫描 余额查询 数据审计 |
+| [📂 `vsys_lease_manager`](#5-vsys_lease_manager) | **VSYS批量租赁/取消租赁** | VSYS一键批量租赁与取消租赁 | 批量租赁 流水退租 自动租赁 |
+| [📂 `vsys_volume_booster`](#6-vsys_volume_booster) | **VSYS链上活跃度激活** | 用于模拟VSYS生态流动性 | 生态活跃 流动性模拟 全自动循环  |
+| [📂 `vsys_untraceable_mixer`](#7-vsys_untraceable_mixer) | **VSYS多层隐私转账** | VSYS链上防追踪资产分发 | 多层级转账  防追踪分发 交叉互转 |
+| [📂 `vsys_batch_sweeper`](#8-vsys_batch_sweeper) | **VSYS余额批量归集** | VSYS多地址余额批量汇总 | 资金聚合 自动归集 余额扫平 |
+
+</details>
 
 ---
 
 ## 🚀 Python代码功能详解 (V Systems)
 
-本项目包含一系列针对 VSYS (V Systems) 区块链开发的 Python 自动化与生态工具。以下是核心功能模块概览：
+<details>
+<summary><b>📐 点击展开 / 收起核心功能详解表格</b></summary>
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center;">#</th>
-      <th>脚本/模块名称</th>
-      <th style="text-align: center;">功能分类</th>
-      <th>核心功能描述</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center;"><small>1</small></td>
-      <td><small><code>vsys_supernode_install</code></small></td>
-      <td style="text-align: center;"><small>⛓️ 私人节点</small></td>
-      <td><small>VSYS 区块链超级节点一键安装（自建节点使用，包含主网数据快照等）。</small></td>
-    </tr>
-    <tr>
-      <td style="text-align: center;"><small>2</small></td>
-      <td><small><code>Vanity_Address_Generator</code></small></td>
-      <td style="text-align: center;"><small>💎 靓号生成</small></td>
-      <td><small>寻找纯数字、特定单词等个性化地址，支持自主配置，自动导出地址与私钥。</small></td>
-    </tr>
-    <tr>
-      <td style="text-align: center;"><small>3</small></td>
-      <td><small><code>vsys_mass_transfer</code></small></td>
-      <td style="text-align: center;"><small>💸 资产分发</small></td>
-      <td><small>使用私钥登录主钱包，按自定义要求将金额批量分发到多个目标钱包。</small></td>
-    </tr>
-    <tr>
-      <td style="text-align: center;"><small>4</small></td>
-      <td><small><code>vsys_balance_checker</code></small></td>
-      <td style="text-align: center;"><small>💳 数据审计</small></td>
-      <td><small>VSYS 区块链海量地址余额扫描，支持配合 Excel 记录与追踪历史余额情况。</small></td>
-    </tr>
-    <tr>
-      <td style="text-align: center;"><small>5</small></td>
-      <td><small><code>vsys_lease_manager</code></small></td>
-      <td style="text-align: center;"><small>💰 权益租赁</small></td>
-      <td><small>VSYS 资产一键批量租赁（Lease）与流水线式便捷退租（Cancel）。</small></td>
-    </tr>
-    <tr>
-      <td style="text-align: center;"><small>6</small></td>
-      <td><small><code>vsys_volume_booster</code></small></td>
-      <td style="text-align: center;"><small>🔄 加活跃度</small></td>
-      <td><small>用于模拟 VSYS 生态流动性，支持多层级 + 24小时全自动转账归集自循环。</small></td>
-    </tr>
-    <tr>
-      <td style="text-align: center;"><small>7</small></td>
-      <td><small><code>vsys_untraceable_mixer</code></small></td>
-      <td style="text-align: center;"><small>🔀 多层转账</small></td>
-      <td><small>VSYS 防追踪资产分发，支持资产打碎、混合、交叉互转及重新聚合。</small></td>
-    </tr>
-    <tr>
-      <td style="text-align: center;"><small>8</small></td>
-      <td><small><code>vsys_batch_sweeper</code></small></td>
-      <td style="text-align: center;"><small>📥 资产归集</small></td>
-      <td><small>批量将多个 VSYS 钱包账户的可用余额向指定的单一目标地址进行自动归集。</small></td>
-    </tr>
-  </tbody>
-</table>
+| # | 脚本/模块名称 | 功能分类 | 核心功能描述 |
+| :-: | :--- | :-: | :--- |
+| 1 | `vsys_supernode_install` | ⛓️ 私人节点 | VSYS 区块链超级节点一键安装（自建节点使用，包含主网数据快照等）。 |
+| 2 | `Vanity_Address_Generator` | 💎 靓号生成 | 寻找纯数字、特定单词等个性化地址，支持自主配置，自动导出地址与私钥。 |
+| 3 | `vsys_mass_transfer` | 💸 资产分发 | 使用私钥登录主钱包，按自定义要求将金额批量分发到多个目标钱包。 |
+| 4 | `vsys_balance_checker` | 💳 数据审计 | VSYS 区块链海量地址余额扫描，支持配合 Excel 记录与追踪历史余额情况。 |
+| 5 | `vsys_lease_manager` | 💰 权益租赁 | VSYS 资产一键批量租赁（Lease）与流水线式便捷退租（Cancel）。 |
+| 6 | `vsys_volume_booster` | 🔄 加活跃度 | 用于模拟 VSYS 生态流动性，支持多层级 + 24小时全自动转账归集自循环。 |
+| 7 | `vsys_untraceable_mixer` | 🔀 多层转账 | VSYS 防追踪资产分发，支持资产打碎、混合、交叉互转及重新聚合。 |
+| 8 | `vsys_batch_sweeper` | 📥 资产归集 | 批量将多个 VSYS 钱包账户的可用余额向指定的单一目标地址进行自动归集。 |
+
+</details>
 
 ---
 ## 🌐 VSYS 节点接口 (API) 
