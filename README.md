@@ -21,9 +21,9 @@
 
 | 代码 (Python) | 实现目标 (Role) | 特性说明 (Highlights) | 标签 (tag) |
 | :--- | :--- | :--- | :--- | 
-| [📂 `vsys_supernode_install`](#1-vsys_supernode_install) | **VSYS节点一键部署** | 自建节点使用，包含主网数据快照等 | 超级节点 Supernode 自建节点 |
+| [📂 `vsys_supernode_install`](#1-vsys_supernode_install) | **VSYS节点一键部署** | 自建节点方法，主网数据快照等 | 超级节点 Supernode 自建节点 |
 | [📂 `Vanity_Address_Generator`](#2-vanity_address_generator) | **VSYS靓号地址生成** | 寻找纯数字、特定单词等地址 | 靓号碰撞 海量地址 私钥导出 |
-| [📂 `vsys_mass_transfer`](#3-vsys_mass_transfer) | **VSYS批量转账** | 按要求将金额批量分发 to 多个钱包 | 批量转账 资产分发 私钥登录 |
+| [📂 `vsys_mass_transfer`](#3-vsys_mass_transfer) | **VSYS批量转账** | 按要求将金额批量分发到多个钱包 | 批量转账 资产分发 私钥登录 |
 | [📂 `vsys_balance_checker`](#4-vsys_balance_checker) | **VSYS余额批量查询** | VSYS区块链海量地址余额扫描 | 海量扫描 余额查询 数据审计 |
 | [📂 `vsys_lease_manager`](#5-vsys_lease_manager) | **VSYS批量租赁/取消租赁** | VSYS一键批量租赁与取消租赁 | 批量租赁 流水退租 自动租赁 |
 | [📂 `vsys_volume_booster`](#6-vsys_volume_booster) | **VSYS链上活跃度激活** | 用于模拟VSYS生态流动性 | 生态活跃 流动性模拟 全自动循环  |
