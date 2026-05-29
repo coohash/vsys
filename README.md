@@ -23,7 +23,7 @@
 
 | 代码 (Python) | 实现目标 (Role) | 特性说明 (Highlights) | 标签 (tag) |
 | :--- | :--- | :--- | :--- | 
-| [📂 `vsys_supernode_install`](#1-vsys_supernode_install) | **VSYS节点一键部署** | 自建节点方法，主网数据快照等 | 超级节点 Supernode 自建节点 |
+|<sub> [📂 `vsys_supernode_install`](#1-vsys_supernode_install) </sub>|<sub> **VSYS节点一键部署** </sub>|<sub> 自建节点方法，主网数据快照等 </sub>|<sub> 超级节点 Supernode 自建节点 </sub>|
 | [📂 `Vanity_Address_Generator`](#2-vanity_address_generator) | **VSYS靓号地址生成** | 寻找纯数字、特定单词等地址 | 靓号碰撞 海量地址 私钥导出 |
 | [📂 `vsys_mass_transfer`](#3-vsys_mass_transfer) | **VSYS批量转账** | 按要求将金额批量分发到多个钱包 | 批量转账 资产分发 私钥登录 |
 | [📂 `vsys_balance_checker`](#4-vsys_balance_checker) | **VSYS余额批量查询** | VSYS区块链海量地址余额扫描 | 海量扫描 余额查询 数据审计 |
