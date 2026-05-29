@@ -38,12 +38,12 @@
 
 | # | 脚本/模块名称 | 功能分类 | 核心功能描述 |
 | :-: | :--- | :-: | :--- |
-| 1 | `vsys_supernode_install` | ⛓️ 节点基础设施 | VSYS 区块链超级节点一键安装（自建节点使用，包含主网数据快照等）。 |
+| 1 | `vsys_supernode_install` | ⛓️ 私人节点 | VSYS 区块链超级节点一键安装（自建节点使用，包含主网数据快照等）。 |
 | 2 | `Vanity_Address_Generator` | 💎 靓号生成 | 寻找纯数字、特定单词等个性化地址，支持自主配置，自动导出地址与私钥。 |
 | 3 | `vsys_mass_transfer` | 💸 资产分发 | 使用私钥登录主钱包，按自定义要求将金额批量分发到多个目标钱包。 |
 | 4 | `vsys_balance_checker` | 💳 数据审计 | VSYS 区块链海量地址余额扫描，支持配合 Excel 记录与追踪历史余额情况。 |
 | 5 | `vsys_lease_manager` | 💰 权益租赁 | VSYS 资产一键批量租赁（Lease）与流水线式便捷退租（Cancel）。 |
-| 6 | `vsys_volume_booster` | 🔄 流动性模拟 | 用于模拟 VSYS 生态流动性，支持多层级 + 24小时全自动转账归集自循环。 |
+| 6 | `vsys_volume_booster` | 🔄 加活跃度 | 用于模拟 VSYS 生态流动性，支持多层级 + 24小时全自动转账归集自循环。 |
 | 7 | `vsys_untraceable_mixer` | 🔀 多层转账 | VSYS 防追踪资产分发，支持资产打碎、混合、交叉互转及重新聚合。 |
 | 8 | `vsys_batch_sweeper` | 📥 资产归集 | 批量将多个 VSYS 钱包账户的可用余额向指定的单一目标地址进行自动归集。 |
 
