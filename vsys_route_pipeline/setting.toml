@@ -1,12 +1,12 @@
 # ==============================================================================
-# 🛰️ VSYS Blockchain Asset Route Pipeline - Production Configuration Matrix
+# 💡 VSYS Blockchain Asset Route Pipeline - Production Configuration Matrix
 # 文件名: setting.toml
 # 描述: 资产自动化路由与非线性管道流转全量配置文件（全数字、全时序可调）
 # ==============================================================================
 
 [network_core]
 # VSYS 区块链节点 RPC API 路由地址
-node_url = "http://172.25.187.177:9922"
+node_url = "http://127.0.0.1:9922"
 # 网络物理标识：'M' 代表主网 (Mainnet)，'T' 代表测试网 (Testnet)
 network_byte = "M"
 # VSYS 底层原生交易标准固定手续费 (0.1 VSYS = 10,000,000 Satoshi)
