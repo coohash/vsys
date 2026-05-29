@@ -262,14 +262,15 @@ $60N$ 个 L14 地址是系统技术实现最复杂的区域。它彻底抛弃了
 | **L14** | 60N=12,000 漩涡矩阵 | 状态机非线性反弹 | 20% 推进至 L15 ； 60% 强行逆流推回 L13 ； 20% 越级逆流推回 L12 | 状态机持续摩擦，资产直到被两极收敛甩干 |
 | **L15** | 最终收款目标接收港 | 完美合规承接期望：1,000,000.0 VSYS | 终端 B 守护进程达成双重指标收敛后自动平滑断开 | 最终资产落袋安全港 |
 
----
+<br>
 
-<p align="center">
-   🌟 <b>Buy me a coffee via VSYS Coin</b> 🌟
-  <br><br>
-  <code>AR4j2MginGAS9zZzG1Y2rxZz43555592517</code>
-  <br><br>
-  <sub>欢迎投喂 VSYS 资产，你的支持是开源自动化脚本持续更新的最大动力！🚀</sub>
-</p>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/AletheiaWare/AletheiaWare/master/heart.gif" width="35" height="35" style="vertical-align: middle; margin-right: 10px;"/>
+  <span style="font-size: 1.2em; font-weight: bold;">如果你觉得这个工具好用，欢迎请创作者喝杯咖啡！</span>
+</div>
 
----
+<br>
+
+```markdown
+# 💰 VSYS Coin 
+AR4j2MginGAS9zZzG1Y2rxZz43555592517
