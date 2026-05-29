@@ -6,11 +6,9 @@
 # ⚡ VSYS Blockchain Python Code
 
 <p align="left">
- <img src="https://img.shields.io/badge/vsys--network-Mainnet-orange?style=flat-square" alt="VSYS"/>
- <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="VSYS"/>
- <img src="https://img.shields.io/badge/python-3.10%20%7C%203.11-darkgreen.svg" alt="VSYS"/>
- <img src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS-orange.svg" alt="VSYS"/>
- <img src="https://img.shields.io/badge/Engine-Asynchronous%20State--Machine-blueviolet.svg" alt="VSYS"/>
+  <img src="https://img.shields.io/badge/python-3.1%2B-blue?style=flat-square&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/vsys--network-Mainnet-orange?style=flat-square" alt="VSYS"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"/>
 </p>
 
 > **VSYS (V Systems) 区块链 Python 零基础**
