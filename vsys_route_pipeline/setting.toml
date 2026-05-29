@@ -1,7 +1,8 @@
 # ==============================================================================
-# 💡 VSYS Blockchain Asset Route Pipeline - Production Configuration Matrix
+# 💡 VSYS Blockchain Route Pipeline - Production Configuration Matrix
 # 文件名: setting.toml
 # 描述: 资产自动化路由与非线性管道流转全量配置文件（全数字、全时序可调）
+# 当前设置为调试阶段用，例如租赁后秒级取消，仅用于测试
 # ==============================================================================
 
 [network_core]
