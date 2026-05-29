@@ -40,7 +40,7 @@
 
 | # | 脚本/模块名称 |  功能分类  | 核心功能描述 |
 | :-: | :--- | :--- | :--- |
-| 1 | `vsys_supernode_install` | ⛓️ <sub>私人节点</sub> | <sub>VSYS 区块链超级节点一键安装（自建节点使用，包含主网数据快照等）。</sub> |
+| 1 | `vsys_supernode_install` | <sub>⛓️ 私人节点</sub> | <sub>VSYS 区块链超级节点一键安装（自建节点使用，包含主网数据快照等）。</sub> |
 | 2 | `Vanity_Address_Generator` | 💎 靓号生成 | 寻找纯数字、特定单词等个性化地址，支持自主配置，自动导出地址与私钥。 |
 | 3 | `vsys_mass_transfer` | 💸 资产分发 | 使用私钥登录主钱包，按自定义要求将金额批量分发到多个目标钱包。 |
 | 4 | `vsys_balance_checker` | 💳 数据审计 | VSYS 区块链海量地址余额扫描，支持配合 Excel 记录与追踪历史余额情况。 |
