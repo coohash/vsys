@@ -6,6 +6,7 @@
 [![Engine](https://img.shields.io/badge/Engine-Asynchronous%20State--Machine-blueviolet.svg)]()
 
 An industrial-grade, ultra-high confusion asset routing pipeline designed specifically for the V Systems blockchain. It shatters standard linear tracing metrics by implementing a dual-terminal sandglass counter-flow state machine architecture.
+---
 
 ### ⚡ 核心依赖安装 (Installation)
 确保本地环境包含原生异步网络扩展以及 Base58 编解码套件：
@@ -62,7 +63,8 @@ A high-performance automated asset routing and pipeline circulation toolkit for 
 ## 🛰️ 二、 系统流转拓扑架构（L0 $\rightarrow$ L15 全层级工艺流程）
 
 系统的整体物理演进拓扑由两大核心部分组成：**终端 A（线性多级指数裂变大水库）** 与 **终端 B（非线性沙漏守护进程状态机）**。
-```text
+
+  ```text
 [ 终端 A - 指数级爆破洗净 ]
 L0 (根资产进场)
 │
@@ -108,7 +110,7 @@ L8 (30000蓄水池大总池)
 (30% 渗出)  │        │ (20% 顺流)
 ▼        ▼
 [ L15 终点渗透接收港 ] (M资产归集)
-```
+  ```
 ### 🛰️ 终端 A：矩阵爆发级线性拓扑爆破段（L0 $\rightarrow$ L8）
 
 #### 📍 L0 层级：根清算进场源头
