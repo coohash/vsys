@@ -70,7 +70,7 @@
    <sub>2. 🔍 检查数据是否同步：在节点地址后面加上 /blocks/height ”获取区块高度，若与 VSYS 官网浏览器（explorer.v.systems）一致，即为最新，可放心使用。</sub>
 
 ![Security](https://img.shields.io/badge/VSYS%20node-%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E8%87%AA%E5%BB%BAVSYS%E8%8A%82%E7%82%B9-success?style=for-the-badge&logo=githubactions&logoColor=white)
-* 🚀 速度优势：如果是你在电脑或服务器上独立搭建的私有节点（具体搭建方式可参考项目内的 vsys_supernode_install.txt 说明文件），由于没有任何局域网外层网络限制，代码调用速度可达 8000次/秒 以上！
+* 🚀 速度优势：如果是你在电脑或服务器上独立搭建的私有节点，具体搭建方式可参考 vsys_supernode_install.txt 搭建指导，由于没有任何局域网外层网络限制，代码调用速度可超过8000次/秒。
 
 * 📍 本地节点默认地址：127.0.0.1:9922
 
