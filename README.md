@@ -44,7 +44,7 @@
 | 4 | `vsys_balance_checker` | 💳 数据审计 | VSYS 区块链海量地址余额扫描，支持配合 Excel 记录与追踪历史余额情况。 |
 | 5 | `vsys_lease_manager` | 💰 权益租赁 | VSYS 资产一键批量租赁（Lease）与流水线式便捷退租（Cancel）。 |
 | 6 | `vsys_volume_booster` | 🔄 流动性模拟 | 用于模拟 VSYS 生态流动性，支持多层级 + 24小时全自动转账归集自循环。 |
-| 7 | `vsys_untraceable_mixer` | 🔀 隐私混币 | VSYS 防追踪资产分发，支持资产打碎、混合、交叉互转及重新聚合。 |
+| 7 | `vsys_untraceable_mixer` | 🔀 多层转账 | VSYS 防追踪资产分发，支持资产打碎、混合、交叉互转及重新聚合。 |
 | 8 | `vsys_batch_sweeper` | 📥 资产归集 | 批量将多个 VSYS 钱包账户的可用余额向指定的单一目标地址进行自动归集。 |
 
 ---
