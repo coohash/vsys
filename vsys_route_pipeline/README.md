@@ -262,9 +262,4 @@ $60N$ 个 L14 地址是系统技术实现最复杂的区域。它彻底抛弃了
 | **L14** | 60N=12,000 漩涡矩阵 | 状态机非线性反弹 | 20% 推进至 L15 ； 60% 强行逆流推回 L13 ； 20% 越级逆流推回 L12 | 状态机持续摩擦，资产直到被两极收敛甩干 |
 | **L15** | 最终收款目标接收港 | 完美合规承接期望：1,000,000.0 VSYS | 终端 B 守护进程达成双重指标收敛后自动平滑断开 | 最终资产落袋安全港 |
 
-### ☕ 请我喝杯咖啡 / Support my work
-
-[![VSYS Deposit](https://img.shields.io/badge/Donate-VSYS%20Coin-0052FF?style=for-the-badge&logo=blockchain&logoColor=white)](javascript:void(0);)
-
-> **VSYS Coin：**
-> `AR4j2MginGAS9zZzG1Y2rxZz43555592517`
+[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-blueviolet.svg?style=flat)]() [![VSYS Address](https://img.shields.io/badge/VSYS%20Address-AR4j2MginGAS...-blueviolet.svg?style=flat)]()
