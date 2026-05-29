@@ -55,8 +55,7 @@
 
 ![Node](https://img.shields.io/badge/VSYS%20node-%E4%BD%BF%E7%94%A8VSYS%E5%85%AC%E5%BC%80%E8%8A%82%E7%82%B9-blue?style=for-the-badge&logo=linux&logoColor=white)
 *  🚀 速度限制：公开节点是公共资源，为了防止过多占用，建议代码请求速度不要超过 100次/秒。
-
-** 📋 常用公开节点地址一览：
+* 📋 常用公开节点地址一览：
 
   ```text
   https://vnode.vcoin.systems
