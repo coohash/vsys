@@ -11,9 +11,9 @@
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License"/>
 </p>
 
-> **VSYS (V Systems) 区块链 Python 脚本仓库**
+> **VSYS (V Systems) 区块链 Python 零基础**
 > 
-> 示例脚本（如余额读取、资金归集、批量处理各种链上动作等）开发者可让AI参考（例如Gemini）按自己的需求修改Python代码。
+> 本项目对编程零基础用户极度友好，通过 requirements.txt 提供的详细环境配置指南，即可快速运行全部 Python 代码。使用时建议打开AI（例如Gemini）排错或按自己的需求修改Python代码。
 
 ---
 
@@ -46,16 +46,6 @@
 | 6 | `vsys_volume_booster` | 🔄 加活跃度 | 用于模拟 VSYS 生态流动性，支持多层级 + 24小时全自动转账归集自循环。 |
 | 7 | `vsys_untraceable_mixer` | 🔀 多层转账 | VSYS 防追踪资产分发，支持资产打碎、混合、交叉互转及重新聚合。 |
 | 8 | `vsys_batch_sweeper` | 📥 资产归集 | 批量将多个 VSYS 钱包账户的可用余额向指定的单一目标地址进行自动归集。 |
-
----
-
-## 📜 Disclaimer
-
-> [!IMPORTANT]
-> **零基础也能轻松上手**<br/>
-> <sub>1. 本项目对编程零基础用户极度友好，通过 requirements.txt 提供的详细环境配置指南，即可快速运行全部 Python 代码。</sub><br/>
-> <sub>2. 本仓库中涉及的所有批量操作脚本，均在本地内存中执行离线签名，私钥绝对不会向任何网络节点传输。</sub><br/>
-> <sub>3. 由于脚本需要读取明文私钥，请在干净的电脑/服务器上运行。使用后建议立即删除包含私钥的文件。</sub>
 
 ---
 
@@ -148,3 +138,11 @@ VSYS-Blockchain-Python-Code/
     ├── data_20260420.tar.gz         # 压缩包大小约27G，无法上传，请参考vsys_supernode_install.txt获取
     └── vsys_address_snapshot        # 遍历与扫描区块，离线态的演化追踪，并解析交互
   ```
+---
+
+## 📜 Disclaimer
+
+> [!IMPORTANT]
+> **区块链安全提示**<br/>
+> <sub>1. 本仓库中涉及的所有批量操作脚本，均在本地内存中执行离线签名，私钥绝对不会向任何网络节点传输。</sub><br/>
+> <sub>2. 由于脚本需要读取明文私钥，请在干净的电脑/服务器上运行。使用后建议立即删除包含私钥的文件。</sub>
