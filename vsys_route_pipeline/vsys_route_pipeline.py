@@ -280,7 +280,9 @@ class VsysAutomationEngine:
         if sender_addr != self.l0_addr and self.ledger.get(sender_addr, {}).get("bal", 0) < base_fee:
             return False
         
-        url = f"{net_cfg.get('node_url', 'http://127.0.0.1:9922')}/transactions/broadcast"
+        # ⚠️ 这里是观察到“屏幕截图 2026-06-01 042701.jpg”中 URL 路径报错的关键区域：
+        # “屏幕截图 2026-06-01 043346.png” 指示该节点只支持 /vsys/broadcast/payment 而非 /transactions/broadcast
+        url = f"{net_cfg.get('node_url', 'http://127.0.0.1:9922')}/vsys/broadcast/payment"
         attempt = 0
         base_delay = 0.5
         max_delay = 32.0
@@ -292,9 +294,8 @@ class VsysAutomationEngine:
                 async with self.semaphore:
                     # 如果包含真实网络会话且不是模拟地址，则向真实 RPC 节点发出广播
                     if session and not sender_addr.startswith("AR_Mock"):
-                        # 生产环境通常需要组装完整的广播 JSON 体，此处保持原模拟包或打包广播格式
-                        # 为防止真网络异常触发退避，我们包装网络请求头并设定 10 秒超时
-                        async with session.post(url, data=payload_bytes, timeout=10) as response:
+                        # 生产环境需要组装符合“屏幕截图 2026-06-01 043346.png”的 JSON 体
+                        async with session.post(url, json={"data": payload_bytes.hex()}, timeout=10) as response:
                             if response.status == 200:
                                 break
                             elif response.status == 429:
