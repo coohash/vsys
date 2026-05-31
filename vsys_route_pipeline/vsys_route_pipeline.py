@@ -21,6 +21,7 @@ import base58
 import random
 import logging
 import sys
+import traceback
 from decimal import Decimal
 from typing import Dict, List, Tuple, Any, Optional
 
@@ -296,21 +297,24 @@ class VsysAutomationEngine:
                                 break
                             elif response.status == 429:
                                 logger.warning(f"⚠️ [RPC 429 限流] 地址 {sender_addr[:8]} 触发现速，准备执行退避机制...")
+                            err_text = await response.text()
+                            logger.error(f"🚨 [网络层报错] HTTP {response.status} | 响应内容: {err_text}")
                             response.raise_for_status()
                     else:
                         # 影子/干跑模拟环境：直接断开跳出循环，模拟成功响应
                         break
-            except Exception as error_context:
+            except Exception:
                 attempt += 1
+                # 增强：输出详细的 Traceback 以便调试
+                logger.error(f"⚠️ [捕获到异常] 尝试次数: {attempt} | 类型: {tx_type} | 源: {sender_addr}")
+                logger.error(f"🔍 错误堆栈详情:\n{traceback.format_exc()}")
+                
                 # 标准工业指数退避计算公式 + 随机扰动震荡因子
                 # (已修改适配新重试配置名)
                 retry_min = CONFIG["network_core"]["retry_delay_min"]
                 retry_max = CONFIG["network_core"]["retry_delay_max"]
                 backoff_delay = min(base_delay * (2 ** attempt) + random.uniform(retry_min, retry_max), max_delay)
-                logger.error(
-                    f"🚨 [网络异动/超时阻断] 动作 {tx_type} 在地址 {sender_addr[:10]}... 发起第 {attempt} 次顽固重试。"
-                    f"原因: {str(error_context)[:50]} | 强制断流冷却 {backoff_delay:.2f} 秒..."
-                )
+                logger.error(f"🚨 [冷却] 动作 {tx_type} 强制断流冷却 {backoff_delay:.2f} 秒...")
                 await asyncio.sleep(backoff_delay)
 
         try:
@@ -327,60 +331,46 @@ class VsysAutomationEngine:
         if amount_sat <= 0: 
             return False
         
-        # (已修改适配新配置名)
+        # 实时进度追踪
+        logger.info(f"▶️ [进度追踪] 准备划转: {sender[:8]}... -> {recipient[:8]}... | 金额: {amount_sat/10**8:.8f} VSYS")
+        
         base_fee = CONFIG["network_core"]["base_fee_satoshi"] 
         
-        # 🔍 优化项3：获取本地账本/或快照可用余额进行强力前置风控拦截核算
         if sender in self.ledger:
-            # 动态产生需要严格留存留底的随机粉尘资产并原地转换为晶粒 (已修改适配新配置名)
             dust_vsys = random.uniform(CONFIG["dust_policy"]["min_dust_vsys"], CONFIG["dust_policy"]["max_dust_vsys"])
             dust_sat = int(dust_vsys * 10**8)
-            
             current_snapshot_bal = self.ledger[sender]["bal"]
-            
-            # 核算扣除公式：计算扣除这笔转账、固化手续费、沉淀粉尘后，账户是否会陷入赤字
             remaining_after_math = current_snapshot_bal - amount_sat - base_fee - dust_sat
             
-            # 隔离拦截判定：如果核算后剩余金额 <= 0，就地进行地址防报错安全防护隔离，绝不广播
             if remaining_after_math <= 0:
-                current_vsys_bal = current_snapshot_bal / 10**8
-                logger.warning(
-                    f"🛡️ [可用额不足·熔断隔离] 源地址: {sender[:8]}... 当前快照余额: {current_vsys_bal:.4f} VSYS. "
-                    f"由于无法足额抵扣 (本次拟转: {amount_sat/10**8:.4f} + 手续费: 0.1 + 保留粉尘: {dust_vsys:.2f}), "
-                    f"系统已启动前置隔离防线并安全跳过，成功阻断 Insufficient Balance 报错风险。"
-                )
-                # ➕ 补齐缺失功能：队列错误隔离保护，单步动作报错跳过后，自动进行安全冷却
+                logger.warning(f"🛡️ [可用额不足·熔断隔离] 源地址: {sender[:8]}... 系统已启动前置隔离防线。")
                 err_min = CONFIG["control_gating"].get("error_skip_delay_min", 3.0)
                 err_max = CONFIG["control_gating"].get("error_skip_delay_max", 5.0)
                 await asyncio.sleep(random.uniform(err_min, err_max))
                 return False
                 
-            # 核算过关，通过安全阈值，扣除划转额
             if sender != self.l0_addr:
                 self.ledger[sender]["bal"] -= amount_sat
             
         if recipient in self.ledger:
             self.ledger[recipient]["bal"] += amount_sat
             
-        # 🔍 优化项2：落实 19 位纳秒级高精时间戳
         nano_ts = int(time.time() * 1000000000)
+        p_bytes = self.crypto.build_payment_bytes(recipient, amount_sat, nano_ts, fee_sat=base_fee)
         
-        # 🔍 优化项2：底层完全脱离第三方包，直接采用原生 struct 编译大端序二进制字节流
-        p_bytes = self.crypto.build_payment_bytes(
-            recipient if not recipient.startswith("AR_Mock") else "ARQXTpJAxSME8G7eUuRhJM8MFtuXZhU8TZv", 
-            amount_sat, 
-            nano_ts,
-            fee_sat=base_fee
-        )
+        success = await self.broadcast_tx_safely(session, "PAYMENT", sender, p_bytes)
         
-        await self.broadcast_tx_safely(session, "PAYMENT", sender, p_bytes)
+        # 交互反馈
+        if success:
+            logger.info(f"✅ [进度完成] {sender[:8]}... 划转成功。")
+        else:
+            logger.error(f"❌ [进度异常] {sender[:8]}... 划转失败。")
         
         # ➕ 补齐缺失功能：终端 A 线性级联期间的单步原子划转动作随机延迟
         interval_min = CONFIG["terminal_a_topology"].get("interval_min", 1.0)
         interval_max = CONFIG["terminal_a_topology"].get("interval_max", 4.0)
-        # 为避免非终端 A 环境触发，提供极短的基础保护，此处应用至全域原子休眠
         await asyncio.sleep(random.uniform(interval_min, interval_max))
-        return True
+        return success
 
     async def execute_lease_and_cancel_immediately(self, session: aiohttp.ClientSession, sender: str) -> None:
         """核心规则5：针对给定的 15 个超级节点触发瞬间解约租赁，混淆痕迹"""
