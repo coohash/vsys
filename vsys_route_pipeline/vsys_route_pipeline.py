@@ -145,6 +145,65 @@ def load_runtime_settings() -> Dict[str, Any]:
                         v_val = v
                 cfg[current_sec][k] = v_val
 
+    # ==============================================================================
+    # 🛰️ 增量桥接层：无损兼容新版 setting.toml 的表头与变量断层映射
+    # ==============================================================================
+    # 1. Map [network_core] -> [system_env] and [fee_settings]
+    if "network_core" in cfg:
+        cfg.setdefault("system_env", {}).update(cfg["network_core"])
+        if "base_fee_satoshi" in cfg["network_core"]:
+            cfg.setdefault("fee_settings", {})["base_fee_sat"] = cfg["network_core"]["base_fee_satoshi"]
+
+    # 2. Map [control_gating] -> [system_env]
+    if "control_gating" in cfg:
+        cfg.setdefault("system_env", {}).update(cfg["control_gating"])
+        if "safety_redundancy_factor" in cfg["control_gating"]:
+            cfg["system_env"]["safety_factor"] = cfg["control_gating"]["safety_redundancy_factor"]
+
+    # 3. Map [l0_root_account] -> [identity_l0] and [terminal_b_params]
+    if "l0_root_account" in cfg:
+        cfg.setdefault("identity_l0", {})["l0_address"] = cfg["l0_root_account"].get("address")
+        cfg.setdefault("identity_l0", {})["l0_private_key"] = cfg["l0_root_account"].get("private_key")
+        if "initial_balance_vsys" in cfg["l0_root_account"]:
+            cfg.setdefault("terminal_b_params", {})["simulated_l0_balance_vsys"] = cfg["l0_root_account"]["initial_balance_vsys"]
+
+    # 4. Map [dust_policy] -> [dust_settings]
+    if "dust_policy" in cfg:
+        cfg["dust_settings"] = cfg["dust_policy"]
+
+    # 5. Map [supernodes_pool] -> [supernodes]
+    if "supernodes_pool" in cfg:
+        cfg["supernodes"] = cfg["supernodes_pool"]
+
+    # 6. Map [terminal_a_topology] -> [terminal_a_counts] and [system_env] tx_delay
+    if "terminal_a_topology" in cfg:
+        cfg.setdefault("terminal_a_counts", {}).update(cfg["terminal_a_topology"])
+        if "interval_min" in cfg["terminal_a_topology"]:
+            cfg.setdefault("system_env", {})["tx_delay_min"] = cfg["terminal_a_topology"]["interval_min"]
+        if "interval_max" in cfg["terminal_a_topology"]:
+            cfg.setdefault("system_env", {})["tx_delay_max"] = cfg["terminal_a_topology"]["interval_max"]
+        if "l5_to_l6_pulse_count" in cfg["terminal_a_topology"]:
+            cfg["terminal_a_counts"]["l5_to_l6_txs"] = cfg["terminal_a_topology"]["l5_to_l6_pulse_count"]
+        if "l6_to_l5_pulse_count" in cfg["terminal_a_topology"]:
+            cfg["terminal_a_counts"]["l6_to_l5_txs"] = cfg["terminal_a_topology"]["l6_to_l5_pulse_count"]
+
+    # 7. Map [terminal_b_matrix] & [convergence_conditions] -> [terminal_b_params]
+    if "terminal_b_matrix" in cfg:
+        cfg.setdefault("terminal_b_params", {}).update(cfg["terminal_b_matrix"])
+        if "macro_error_margin" in cfg["terminal_b_matrix"]:
+            cfg["terminal_b_params"]["error_margin"] = cfg["terminal_b_matrix"]["macro_error_margin"]
+        if "l8_extract_rate_min" in cfg["terminal_b_matrix"]:
+            cfg["terminal_b_params"]["l8_extract_min_rate"] = cfg["terminal_b_matrix"]["l8_extract_rate_min"]
+        if "l8_extract_rate_max" in cfg["terminal_b_matrix"]:
+            cfg["terminal_b_params"]["l8_extract_max_rate"] = cfg["terminal_b_matrix"]["l8_extract_rate_max"]
+            
+    if "convergence_conditions" in cfg:
+        if "dry_pool_threshold_vsys" in cfg["convergence_conditions"]:
+            cfg.setdefault("terminal_b_params", {})["residual_threshold_vsys"] = cfg["convergence_conditions"]["dry_pool_threshold_vsys"]
+        if "completion_rate_trigger" in cfg["convergence_conditions"]:
+            cfg.setdefault("terminal_b_params", {})["completion_rate_trigger"] = cfg["convergence_conditions"]["completion_rate_trigger"]
+    # ==============================================================================
+
     if "supernodes" not in cfg or not cfg["supernodes"]:
         cfg["supernodes"] = {
             "node_list": [
