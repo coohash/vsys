@@ -349,6 +349,10 @@ class VsysAutomationEngine:
                     f"由于无法足额抵扣 (本次拟转: {amount_sat/10**8:.4f} + 手续费: 0.1 + 保留粉尘: {dust_vsys:.2f}), "
                     f"系统已启动前置隔离防线并安全跳过，成功阻断 Insufficient Balance 报错风险。"
                 )
+                # ➕ 补齐缺失功能：队列错误隔离保护，单步动作报错跳过后，自动进行安全冷却
+                err_min = CONFIG["control_gating"].get("error_skip_delay_min", 3.0)
+                err_max = CONFIG["control_gating"].get("error_skip_delay_max", 5.0)
+                await asyncio.sleep(random.uniform(err_min, err_max))
                 return False
                 
             # 核算过关，通过安全阈值，扣除划转额
@@ -370,6 +374,12 @@ class VsysAutomationEngine:
         )
         
         await self.broadcast_tx_safely(session, "PAYMENT", sender, p_bytes)
+        
+        # ➕ 补齐缺失功能：终端 A 线性级联期间的单步原子划转动作随机延迟
+        interval_min = CONFIG["terminal_a_topology"].get("interval_min", 1.0)
+        interval_max = CONFIG["terminal_a_topology"].get("interval_max", 4.0)
+        # 为避免非终端 A 环境触发，提供极短的基础保护，此处应用至全域原子休眠
+        await asyncio.sleep(random.uniform(interval_min, interval_max))
         return True
 
     async def execute_lease_and_cancel_immediately(self, session: aiohttp.ClientSession, sender: str) -> None:
@@ -586,6 +596,23 @@ class VsysAutomationEngine:
                 break
 
             tasks = []
+
+            # ➕ 补齐缺失功能：局部层级混淆摩擦强度设置 (基于比例切分防止单轮过载崩盘)
+            n_param = CONFIG["terminal_b_matrix"]["target_address_n"]
+            m10 = CONFIG["terminal_b_matrix"].get("l10_inter_transfer_multiplier", 0)
+            m11 = CONFIG["terminal_b_matrix"].get("l11_inter_transfer_multiplier", 0)
+            m13 = CONFIG["terminal_b_matrix"].get("l13_inter_transfer_multiplier", 0)
+            b13 = CONFIG["terminal_b_matrix"].get("l13_burn_txs", 0)
+
+            for _ in range(max(1, int(m10 * n_param / 50))):
+                tasks.append(self.execute_payment(session, random.choice(self.l10_wallets)[0], random.choice(self.l10_wallets)[0], generate_random_amount_sat(1, 5)))
+            for _ in range(max(1, int(m11 * n_param / 50))):
+                tasks.append(self.execute_payment(session, random.choice(self.l11_wallets)[0], random.choice(self.l11_wallets)[0], generate_random_amount_sat(1, 5)))
+            for _ in range(max(1, int(m13 * n_param / 50))):
+                tasks.append(self.execute_payment(session, random.choice(self.l13_wallets)[0], random.choice(self.l13_wallets)[0], generate_random_amount_sat(0.1, 2)))
+            for _ in range(max(1, int(b13 / 50))):
+                b_amt = generate_random_amount_sat(CONFIG["burn_interference"]["min_burn_amount_vsys"], CONFIG["burn_interference"]["max_burn_amount_vsys"])
+                tasks.append(self.execute_payment(session, random.choice(self.l13_wallets)[0], random.choice(self.burn_wallets)[0], b_amt))
 
             # 获取静态阀门控制比例
             b_matrix = CONFIG["terminal_b_matrix"]
