@@ -67,12 +67,12 @@ VSYS Volume Booster & Liquidity Simulation Engine
    脚本内置对 `py_vsys` 顶层空间与底层路径的动态向下双层兼容探测。采用自适应签名绑定，自动提取 Curve25519 的签名句柄，在本地离线计算出密文签名流后再向外推送，保证私钥在整个签名生命周期中绝不联网。
 3. **异步无限状态机控制环**
    主程序运行于 `asyncio` 的高层级异步死循环中。在成功向公链广播一笔交易后，通过可配的时间步调进行无阻塞休眠；若判断当前随机账户由于余额不足不满足转账条件，则通过 0.8（可设置） 秒极速微休眠瞬间切换状态，极大地节约了 CPU 算力损耗。
-4. **可多个终端同时运行**
+4. **可多个终端同时运行，如果所示8个终端**
    <img width="1024" height="559" alt="a0f3063c-ca25-4978-bf7d-0b6beea21a41" src="https://github.com/user-attachments/assets/9a4d2b21-41ec-416f-885f-38e64b5c721e" />
 
 ---
 
-## ⚙️ 核心配置参数详解
+## ⚙️ 核心配置参数详解（请依据实际需求设置）
 
 通过调节全局静态类 `Config` 中的各阈值参数，可以完美调优不同资金规模和冲量速率要求的公链生态网络：
 
@@ -95,95 +95,47 @@ VSYS Volume Booster & Liquidity Simulation Engine
   ```python
   if action_taken:
       await asyncio.sleep(random.randint(2, 13)) # 2~13秒随机休眠，日均约1万次转账，消耗约1000 VSYS手续费
-  
-极限高频冲量模式（需节点响应极快）：
+  ```
+* **极限高频冲量模式（需节点响应极快）**：：
+  ```python
   if action_taken:
     await asyncio.sleep(random.uniform(0.1, 1.0)) # 0.1~1秒极速高频广播，适合节点性能强悍且急需冲高成交量的场景
+  ```
+--------------------------------
 
 🚀 快速上手与部署指引
-1. 规模配比与数据准备
+# 1. 规模配比与数据准备
 当总金库初始配置约 1,000,000 VSYS 资产时，生产级规模建议配比：
 
 中转站地址（translate_midd.csv）：建议数量 < 500 个
-
 独立散户地址（add_priv.csv）：建议数量 < 10,000 个
-
 数据格式规范（极其重要）：
-
 请使用批量工具（如参照 10000_VSYS_Address.txt 中的方法）生成好地址与私钥。
-
 用记事本或文本编辑器分别创建 translate_midd.csv 和 add_priv.csv 文件，放入对应账户。
-
 格式要求：一行一个，地址与私钥中间用英文逗号 , 隔开，绝对不能有标题行（Header）。
 
-2. 前台临时测试运行（本地 PC）
+# 2. 前台临时测试运行（本地 PC）
 本引擎需 7×24 小时长时间不间断轮询，本地测试运行时切勿关闭终端窗口，不可让电脑进入休眠或断网状态：
-
 打开控制台或终端，进入代码所在目录。
+安装核心依赖依赖库：pip3 install py_vsys pandas requests base58
+执行启动命令：python vsys_volume_booster.py
 
-安装核心依赖依赖库：
-
-Bash
-
-
-pip3 install py_vsys pandas requests base58
-执行启动命令：
-
-Bash
-
-
-python vsys_volume_booster.py
-3. Linux 服务器/VPS 后台静默部署（推荐生产环境使用）
+# 3. Linux 服务器/VPS 后台静默部署（推荐生产环境使用）
 建议将脚本部署于纯净、安全的 Linux VPS 环境隔离目录下静默永续长跑：
 
-Bash
+1. 进入您的生产工作目录： cd /www/wwwroot/vsys_volume_booster
+2. 启动后台静默守护进程（屏蔽挂断信号，输出重定向至 vsys_run.log）： nohup python3 vsys_volume_booster.py > vsys_run.log 2>&1 &
+3. 实时追踪链上广播流水日志： tail -f vsys_run.log
 
+# 4.  守护进程安全切断与关闭
 
-# 1. 进入您的生产工作目录
-cd /www/wwwroot/vsys_volume_booster
+1. 查看守护进程的真实 PID 序列号与具体启动时间： ps -ef | grep vsys_volume_booster.py
+2. 强行终止该进程（假设查出来的 PID 进程号是 2661514）： kill -9 2661514
+3. 再次复检进程是否彻底被物理清除： ps -ef | grep vsys_volume_booster.py
 
-# 2. 启动后台静默守护进程（屏蔽挂断信号，输出重定向至 vsys_run.log）
-nohup python3 vsys_volume_booster.py > vsys_run.log 2>&1 &
-
-# 3. 实时追踪链上广播流水日志
-tail -f vsys_run.log
-4. 🛑 守护进程安全切断与关闭
-若想优雅终止后台长跑的脚本，请执行以下标准三步指令：
-
-Bash
-
-
-# 1. 查看守护进程的真实 PID 序列号与具体启动时间
-ps -ef | grep vsys_volume_booster.py
-
-# 2. 强行终止该进程（假设查出来的 PID 进程号是 2661514）
-kill -9 2661514
-
-# 3. 再次复检进程是否彻底被物理清除
-ps -ef | grep vsys_volume_booster.py
-5. 🧹 Linux 磁盘日志维护
-为了防止 7×24 小时高频转账导致日志文件过大、挤爆 Linux 服务器磁盘空间，建议建立自动截断清理机制：
-
-手动瞬间排空清零当前日志：
-
-Bash
-
-
-> /www/wwwroot/vsys_volume_booster/vsys_run.log
-系统级定时自动截断（每 3 天凌晨 0 点自动物理清空）：
-执行下面这条组合指令，可自动向系统的 crontab 表中追加注入清理计划：
-
-Bash
-
-
-(crontab -l 2>/dev/null; echo "0 0 */3 * * > /www/wwwroot/vsys_volume_booster/vsys_run.log") | crontab -
-🛡️ 私钥安全与长效风控隔离红线
-绝对的物理隔离
-translate_midd.csv（中转站）与 add_priv.csv（独立地址）内包含大量明文地址与私钥。
-
+🚀 私钥安全与长效风控隔离红线
+绝对的物理隔离，translate_midd.csv（中转站）与 add_priv.csv（独立地址）内包含大量明文地址与私钥。
 善后粉碎锁死
 当脚本处于停止运行状态时，必须将上述两个包含私钥的 CSV 文件彻底剪切并移动至离线的安全物理 U 盘中，并在联网服务器上使用 Linux shred 命令或安全软件将其粉碎删除。
-
 永续沉淀价值收回凭证
 由于本引擎采用长尾随机残留对抗算法，运行一段时间后，每一个散户独立地址（共计多达上万个）内部都会留存 不等的 VSYS 作为对抗风控的沉淀资产。上述包含私钥的外部账本是未来收回这笔沉淀资金的唯一凭证！ 账本一旦丢失，沉淀资金将永远锁死在链上，请务必多重离线冷备份。
-
