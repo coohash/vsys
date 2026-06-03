@@ -4,21 +4,11 @@
 # FILE_START: vsys_route_pipeline.py
 # DESCRIPTION: 
 #   🛰️ VSYS 区块链资产自动化智能流转与高频深度清洗系统 
-#   - 修复版：严格遵守 VSYS 官方 API 的 JSON 载荷标准。
+#   - 修复版：引入真实链上探测机制。
 #   - 作用：支持 L0-L15 超大规模指数级层级爆破流转；
-#   - 修复：补全了 payment 的 feeScale=100 必填项；
-#   - 增强：重构了租赁/取消租赁 (Lease/Cancel) 的签名与 JSON 构建；
-#   - 增强：纠正了 Leasing 广播的官方标准 API 路由节点。
+#   - 修复：L0 进场资金不再使用本地 TOML 写死的余额，改为实时从节点拉取真实链上数据。
+#   - 增强：动态更新本地账本状态机，防止风控阈值与实际资产脱节。
 # ====================================================
-
-"""
-系统核心架构设计标准：
-1. 【整型本位】底层运算强制乘以 10^8 转换为 Satoshi (晶粒) 整型，上链及日志瞬间还原。
-2. 【高额沉没】所有清洗层级账户必须强制随机沉淀 1.0 ~ 10.0 VSYS 的粉尘资金。
-3. 【统计拦截】进场执行前置统计学上限预估算法，对整网手续费及粉尘进行风控拦截。
-4. 【非线性状态机】终端 B 彻底抛弃线性思维，升级为沙漏型动态逆流平衡状态机。
-5. 【高鲁棒队列】全异步广播核心，自带异常隔离队列，报错自动记录并强制无中断跳过。
-"""
 
 import asyncio
 import aiohttp
@@ -42,7 +32,6 @@ try:
 except ImportError:
     tomllib = None # type: ignore
 
-# 统一配置赛博霓虹色彩的生产级日志输出流
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s',
@@ -51,7 +40,6 @@ logging.basicConfig(
 logger = logging.getLogger("VSYS_PIPELINE")
 
 def load_runtime_settings() -> Dict[str, Any]:
-    """初始化检查并动态加载 setting.toml 配置文件"""
     if not os.path.exists("setting.toml"):
         logger.error("❌ 严重错误：未找到 setting.toml 配置文件，请确保文件存在于同级目录。")
         sys.exit(1)
@@ -101,14 +89,12 @@ CONFIG = load_runtime_settings()
 # 🔑 第二部分：VSYS 底层二进制字节流拼装与多版本 SDK 签名兼容引擎
 # -----------------------------------------------------------------
 class VsysCryptoEngine:
-    """负责遵循 VSYS 官方标准大端序 (Big-Endian >) 拼装字节流及执行私钥签名"""
     def __init__(self) -> None:
         self.curve: Any = None
         self.sign_func: Any = None
         self._detect_and_bind_sdk()
 
     def _detect_and_bind_sdk(self) -> None:
-        """动态感知本地环境，强行融合 py_vsys 不同演进版本中的命名空间漂移断层"""
         try:
             from py_vsys import model as md
             self.curve = getattr(md, 'curve', None)
@@ -128,7 +114,6 @@ class VsysCryptoEngine:
             self.sign_func = next((getattr(self.curve, m) for m in ['sign', 'sign_data', 'get_signature', 'signature'] if m in methods), None)
 
     def sign_transaction_bytes(self, pri_bytes: bytes, data_bytes: bytes) -> bytes:
-        """执行底层 25519 签名，自动适应某些版本（私钥, 数据）与（数据, 私钥）参数位置相反的暗坑"""
         if not self.sign_func:
             return b"simulated_secure_signature_stream_signature_intact"
         try:
@@ -138,7 +123,6 @@ class VsysCryptoEngine:
 
     @staticmethod
     def build_payment_bytes(recipient: str, amount_sat: int, timestamp_nano: int, fee_sat: int = 10000000) -> bytes:
-        """Type 2: 基础转账支付协议拼装顺序 (严格强转及19位纳秒时间戳校验)"""
         amount_sat = int(amount_sat)
         fee_sat = int(fee_sat)
         timestamp_nano = int(timestamp_nano)
@@ -155,7 +139,6 @@ class VsysCryptoEngine:
 
     @staticmethod
     def build_lease_bytes(recipient: str, amount_sat: int, timestamp_nano: int, fee_sat: int = 10000000) -> bytes:
-        """Type 3: 权益租赁协议拼装顺序"""
         return (
             struct.pack(">B", 3) +               
             base58.b58decode(recipient) +        
@@ -167,7 +150,6 @@ class VsysCryptoEngine:
 
     @staticmethod
     def build_cancel_lease_bytes(tx_id_str: str, timestamp_nano: int, fee_sat: int = 10000000) -> bytes:
-        """Type 4: 取消租赁协议拼装顺序"""
         dummy_tx_bytes = base58.b58decode("7xx_DummyLeaseTxIdForFuzzing___________") if len(tx_id_str) < 20 else base58.b58decode(tx_id_str)
         return (
             struct.pack(">B", 4) +               
@@ -223,6 +205,7 @@ class VsysAutomationEngine:
 
     def _assemble_and_register_pipelines(self) -> None:
         n_size = CONFIG["terminal_b_matrix"]["target_address_n"]
+        # 初始化先使用 TOML 中的值占位，后续在 bootstrap 中会替换为真实链上余额
         self.ledger[self.l0_addr] = {"pri": self.l0_priv, "bal": vsys_to_sat(CONFIG["l0_root_account"]["initial_balance_vsys"]), "history_from_l5": False}
         
         self.l1_wallets = load_headerless_csv("L1.csv", mock_count=CONFIG["terminal_a_topology"]["l1_split_count"])
@@ -256,14 +239,29 @@ class VsysAutomationEngine:
                 if addr not in self.ledger:
                     self.ledger[addr] = {"pri": pri, "bal": 0, "history_from_l5": False}
 
+    async def _fetch_real_balance_vsys(self, session: aiohttp.ClientSession, address: str) -> float:
+        """🟢 【新增】核心真实探测逻辑：向链上节点查询指定地址的真实余额"""
+        raw_url = CONFIG['network_core']['node_url'].rstrip('/')
+        url = f"{raw_url}/addresses/balance/{address}"
+        try:
+            async with session.get(url, timeout=5) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    return data.get('balance', 0) / 10**8
+                else:
+                    logger.warning(f"⚠️ 链上探测失败 (HTTP {response.status})，降级使用 TOML 兜底资产。")
+        except Exception as e:
+            logger.warning(f"⚠️ 链上探测发生网络异常 ({e})，降级使用 TOML 兜底资产。")
+        
+        # 异常兜底：返回配置表里的静态值
+        return float(CONFIG["l0_root_account"].get("initial_balance_vsys", 0.0))
+
     async def broadcast_tx_safely(self, session: aiohttp.ClientSession, tx_type: str, sender_addr: str, payload_bytes: Any) -> bool:
-        """全域异步路由控制中心：已严格适配 VSYS Endpoint 路由格式"""
         base_fee = CONFIG["network_core"]["base_fee_satoshi"]
         if sender_addr != self.l0_addr and self.ledger.get(sender_addr, {}).get("bal", 0) < base_fee:
             return False
         
         raw_url = CONFIG['network_core']['node_url'].rstrip('/')
-        # 🟢【核心修复】修正 Leasing 相关的官方 API 路由
         if tx_type == "LEASE":
             url = f"{raw_url}/leasing/broadcast/lease"
         elif tx_type == "CANCEL_LEASE":
@@ -279,7 +277,6 @@ class VsysAutomationEngine:
             try:
                 async with self.semaphore:
                     if session and not sender_addr.startswith("AR_Mock"):
-                        # JSON 直传拦截
                         req_kwargs = {"json": payload_bytes} if isinstance(payload_bytes, dict) else {"data": payload_bytes}
                         async with session.post(url, **req_kwargs, timeout=10) as response:
                             if response.status == 200:
@@ -345,7 +342,6 @@ class VsysAutomationEngine:
         sender_priv = self.ledger[sender]["pri"]
         signature = base58.b58encode(self.crypto.sign_transaction_bytes(base58.b58decode(sender_priv), p_bytes)).decode()
         
-        # 🟢【核心修复】注入 "feeScale": 100 并且补全 "attachment" 以符合严格标准
         tx_payload = {
             "senderPublicKey": base58.b58encode(base58.b58decode(sender_priv)[32:]).decode(),
             "recipient": recipient,
@@ -370,7 +366,6 @@ class VsysAutomationEngine:
         return success
 
     async def execute_lease_and_cancel_immediately(self, session: aiohttp.ClientSession, sender: str) -> None:
-        """核心规则5：精准触发解约租赁，混淆痕迹。已彻底修复载荷签名与格式！"""
         base_fee = CONFIG["network_core"]["base_fee_satoshi"]
         if self.ledger[sender]["bal"] < (base_fee * 2 + 100000000):
             return
@@ -381,7 +376,6 @@ class VsysAutomationEngine:
         sender_priv = self.ledger[sender]["pri"]
         sender_pub_key = base58.b58encode(base58.b58decode(sender_priv)[32:]).decode()
 
-        # 🟢【核心修复1】构建完整的 JSON Lease Payload
         self.ledger[sender]["bal"] -= lease_amt_sat
         ts_lease = int(time.time() * 1000000000)
         l_bytes = self.crypto.build_lease_bytes(target_supernode, lease_amt_sat, ts_lease)
@@ -398,7 +392,6 @@ class VsysAutomationEngine:
         }
         await self.broadcast_tx_safely(session, "LEASE", sender, lease_payload)
         
-        # 🟢【核心修复2】构建完整的 JSON Cancel Lease Payload
         self.ledger[sender]["bal"] += lease_amt_sat
         ts_cancel = int(time.time() * 1000000000)
         dummy_tx_id = "7xx_DummyLeaseTxIdForFuzzing___________"
@@ -694,52 +687,54 @@ class VsysAutomationEngine:
     async def bootstrap(self) -> None:
         logger.info("🛰️ VSYS 自动化管道控制中心激活。开始执行 L0 进场前置统计学预算评估检测...")
         
-        l0_wallet_balance_vsys = CONFIG["l0_root_account"]["initial_balance_vsys"]
-        logger.info(f"💰 探测当前根进场地址 [{self.l0_addr}] 携带可用资产额度为: {l0_wallet_balance_vsys:.2f} VSYS")
-        
-        counts = CONFIG["terminal_a_topology"]
-        
-        total_a_nodes = (
-            counts.get("l1_split_count", 0) + counts.get("l2_split_count", 0) +
-            counts.get("l3_split_count", 0) + counts.get("l4_convergence_count", 0) +
-            counts.get("l5_pool_size", 0) + counts.get("l6_pool_size", 0) +
-            counts.get("l7_convergence_count", 0)
-        )
-        
-        total_a_estimated_txs = (
-            counts.get("l2_inter_transfers", 0) + counts.get("l2_burn_txs", 0) +
-            counts.get("l3_inter_transfers", 0) + counts.get("l4_inter_transfers", 0) +
-            counts.get("l4_burn_txs", 0) + counts.get("l5_to_l6_pulse_count", 0) +
-            counts.get("l6_to_l5_pulse_count", 0) + counts.get("l7_inter_transfers", 0) +
-            (total_a_nodes * 3)
-        )
-        
-        base_fee_vsys = CONFIG["network_core"]["base_fee_satoshi"] / 10**8
-        est_fee_a_sat = vsys_to_sat(total_a_estimated_txs * base_fee_vsys)
-        
-        n_param = CONFIG["terminal_b_matrix"]["target_address_n"]
-        b_matrix = CONFIG["terminal_b_matrix"]
-        
-        total_b_nodes = 154 * n_param
-        
-        total_b_estimated_txs = (
-            (b_matrix.get("l10_inter_transfer_multiplier", 0) * n_param) +
-            (b_matrix.get("l11_inter_transfer_multiplier", 0) * n_param) +
-            (b_matrix.get("l13_inter_transfer_multiplier", 0) * n_param) +
-            b_matrix.get("l13_burn_txs", 0) +
-            (total_b_nodes * 2)
-        )
-        est_fee_b_sat = vsys_to_sat(total_b_estimated_txs * base_fee_vsys)
-        
-        total_estimated_fee_sat = est_fee_a_sat + est_fee_b_sat
-        safety_multiplier = CONFIG["control_gating"]["safety_redundancy_factor"]
-        
-        total_dust_nodes = total_a_nodes + total_b_nodes
-        total_dust_reserve_sat = vsys_to_sat(total_dust_nodes * CONFIG["dust_policy"]["max_dust_vsys"])
-        
-        activation_barrier_sat = total_dust_reserve_sat + int(total_estimated_fee_sat * safety_multiplier)
-        
         async with aiohttp.ClientSession() as session:
+            # 🟢 【核心修复】提前在此处启动网络 Session，向节点请求真实的链上余额
+            l0_wallet_balance_vsys = await self._fetch_real_balance_vsys(session, self.l0_addr)
+            logger.info(f"💰 探测当前根进场地址 [{self.l0_addr}] 链上真实资产额度为: {l0_wallet_balance_vsys:.2f} VSYS")
+            
+            # 🟢 【账本同步】将真实探测到的余额写入本地追踪状态机，避免风控算数错误
+            self.ledger[self.l0_addr]["bal"] = vsys_to_sat(l0_wallet_balance_vsys)
+
+            counts = CONFIG["terminal_a_topology"]
+            total_a_nodes = (
+                counts.get("l1_split_count", 0) + counts.get("l2_split_count", 0) +
+                counts.get("l3_split_count", 0) + counts.get("l4_convergence_count", 0) +
+                counts.get("l5_pool_size", 0) + counts.get("l6_pool_size", 0) +
+                counts.get("l7_convergence_count", 0)
+            )
+            
+            total_a_estimated_txs = (
+                counts.get("l2_inter_transfers", 0) + counts.get("l2_burn_txs", 0) +
+                counts.get("l3_inter_transfers", 0) + counts.get("l4_inter_transfers", 0) +
+                counts.get("l4_burn_txs", 0) + counts.get("l5_to_l6_pulse_count", 0) +
+                counts.get("l6_to_l5_pulse_count", 0) + counts.get("l7_inter_transfers", 0) +
+                (total_a_nodes * 3)
+            )
+            
+            base_fee_vsys = CONFIG["network_core"]["base_fee_satoshi"] / 10**8
+            est_fee_a_sat = vsys_to_sat(total_a_estimated_txs * base_fee_vsys)
+            
+            n_param = CONFIG["terminal_b_matrix"]["target_address_n"]
+            b_matrix = CONFIG["terminal_b_matrix"]
+            
+            total_b_nodes = 154 * n_param
+            total_b_estimated_txs = (
+                (b_matrix.get("l10_inter_transfer_multiplier", 0) * n_param) +
+                (b_matrix.get("l11_inter_transfer_multiplier", 0) * n_param) +
+                (b_matrix.get("l13_inter_transfer_multiplier", 0) * n_param) +
+                b_matrix.get("l13_burn_txs", 0) +
+                (total_b_nodes * 2)
+            )
+            est_fee_b_sat = vsys_to_sat(total_b_estimated_txs * base_fee_vsys)
+            
+            total_estimated_fee_sat = est_fee_a_sat + est_fee_b_sat
+            safety_multiplier = CONFIG["control_gating"]["safety_redundancy_factor"]
+            
+            total_dust_nodes = total_a_nodes + total_b_nodes
+            total_dust_reserve_sat = vsys_to_sat(total_dust_nodes * CONFIG["dust_policy"]["max_dust_vsys"])
+            
+            activation_barrier_sat = total_dust_reserve_sat + int(total_estimated_fee_sat * safety_multiplier)
+            
             if l0_wallet_balance_vsys < 10000.0 or CONFIG["control_gating"]["only_run_b"]:
                 logger.warning(f"⚠️ [风控分流越迁] 触发低头寸运行条件。跳过终端 A，直投终端 B 非线性守护进程！")
                 await self.run_terminal_b_daemon(session)
