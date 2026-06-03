@@ -75,7 +75,7 @@ Public nodes are not permanently stable. Before using them, please be sure to pe
 📍 Default local node address: 127.0.0.1:9922
 
 📂 Repository Directory Structure
-
+ ```text
 VSYS-Blockchain-Python-Code/
 ├── .gitignore                       # Git ignore file configuration
 ├── README.md                        # This readme file
@@ -128,7 +128,7 @@ VSYS-Blockchain-Python-Code/
     ├── data_20260420.tar.gz         # Mainnet node April 20, 2026 data archive (VSYS block height 58062043)
     ├── data_20260420.tar.gz         # Archive size is about 27G, cannot be uploaded, please refer to vsys_supernode_install.txt to obtain
     └── vsys_address_snapshot        # Traverse and scan blocks, offline evolution tracking, and parse interactions
-
+```
 📜 Disclaimer
 [!IMPORTANT]
 Blockchain Security Warning
