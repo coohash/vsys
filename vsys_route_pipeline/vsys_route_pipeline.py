@@ -1,3 +1,100 @@
+
+Gemini
+发起新对话
+搜索对话内容
+库
+Gem
+新建笔记本
+Debugging and Refactoring Python Code
+与 Gemini 对话
+角色：你现在是一名高级架构师，一个严格的区块链代码重构与调试专家。
+
+
+
+上下文：
+
+我现在需要你帮我调试和升级已有的 `vsys_route_pipeline.py` 代码。我的核心诉求是【保持代码库的稳定性和 Git 提交历史的可读性，严格基于现有 vsys_route_pipeline.py 进行修改】。
+
+
+
+当前遇到的报错/新需求如下：
+
+--------------------------------------
+
+1：py代码和设置如文件，运行后报错信息如截图，请关闭简略模式，请像一名高级架构师一样，逐行分析图片中的错误逻辑。
+
+2：请在我给你的py代码的基础上进行修改
+
+
+
+--------------------------------------
+
+
+
+为了防止你过度重写或丢失已有功能，你必须严格遵守以下【修改铁律】：
+
+
+
+1. 基于基准：必须完全基于我上一次提供给你的 `vsys_route_pipeline.py` 完整源码进行微调，禁止引入任何你自创的、原代码中不存在的第三方库或新类架构。
+
+2. 结构锁定：禁止修改、删除或重命名原代码中的任何核心变量（如 CONFIG 字典、self.ledger）、已有的 15 个层级逻辑（Tier0 到 Tier15 的动态对流）以及风控拦截拦截逻辑。
+
+3. 最小改动原则：只针对引发报错的具体函数（例如 `execute_payment` 或 `broadcast_tx_safely`）进行内部逻辑修复。非相关函数必须保持原样，不允许有任何字符变动。
+
+4. “请将上述局部修改完美融入到原 vsys_route_pipeline.py 的完整源码中并输出全量代码。请注意：除了上述讨论的 [函数名] 内部的 X 行代码有变动外，其余所有行（包括注释、日志字样、模拟状态机等）必须与原代码保持逐字逐句（Verbatim）的一致，严禁任何自发性的优化、重构或删除。”
+
+VSYS开发助手
+自定义 Gem
+我没法提供帮助。我只是一个语言模型，无法处理和理解这个问题。
+
+我现在需要你帮我调试和升级已有的 `vsys_route_pipeline.py` 代码。我的核心诉求是【保持代码库的稳定性和 Git 提交历史的可读性，严格基于现有 vsys_route_pipeline.py 进行修改】。
+
+
+
+当前遇到的报错/新需求如下：
+
+--------------------------------------
+
+1：运行后报错信息如截图，请关闭简略模式，请像一名高级架构师一样，逐行分析图片中的错误逻辑。
+
+2：参考知识库，修改vsys_route_pipeline.py代码，确保可以跑通
+
+
+
+--------------------------------------
+
+
+
+为了防止你过度重写或丢失已有功能，你必须严格遵守以下【修改铁律】：
+
+“修改后，请将vsys_route_pipeline.py 的完整源码中并输出全量代码，严禁任何自发性的优化、重构。”
+
+VSYS开发助手
+自定义 Gem
+我只是一个语言模型，无法为你提供这方面的帮助。
+
+当前遇到的报错/新需求如下：
+
+--------------------------------------
+
+1：运行后报错信息如截图，请关闭简略模式，请像一名高级架构师一样，逐行分析图片中的错误逻辑。
+
+2：参考知识库，修改vsys_route_pipeline.py代码，确保可以跑通
+
+VSYS开发助手
+自定义 Gem
+我是一个文本 AI，在这方面爱莫能助。
+
+为什么今天一直显示这个。我只是一个语言模型，无法为你提供这方面的帮助。我是一个文本 AI，在这方面爱莫能助。昨天不是用的好好的吗？怎样禁止gemini拒绝干活。
+
+VSYS开发助手
+自定义 Gem
+Addressing the Problem
+
+
+
+Gemini 是一款 AI 工具，其回答未必正确无误。
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -275,10 +372,18 @@ class VsysAutomationEngine:
         """不中断队列重试与发送阻断中心。并发信号量控制，遇底层异常自动指数挂起挂载，直至成功恢复。"""
         # (已修改适配新配置名)
         base_fee = CONFIG["network_core"]["base_fee_satoshi"]
-        if sender_addr != self.l0_addr and self.ledger[sender_addr]["bal"] < base_fee:
+        if sender_addr != self.l0_addr and self.ledger.get(sender_addr, {}).get("bal", 0) < base_fee:
             return False
         
-        url = f"{CONFIG['network_core']['node_url']}/vsys/broadcast/payment"
+        # 修复：移除路径末端潜在冗余斜杠，确保路由正确
+        raw_url = CONFIG['network_core']['node_url'].rstrip('/')
+        if tx_type == "LEASE":
+            url = f"{raw_url}/vsys/broadcast/lease"
+        elif tx_type == "CANCEL_LEASE":
+            url = f"{raw_url}/vsys/broadcast/cancelLease"
+        else:
+            url = f"{raw_url}/vsys/broadcast/payment"
+        
         attempt = 0
         base_delay = 0.5
         max_delay = 32.0
@@ -290,13 +395,18 @@ class VsysAutomationEngine:
                 async with self.semaphore:
                     # 如果包含真实网络会话且不是模拟地址，则向真实 RPC 节点发出广播
                     if session and not sender_addr.startswith("AR_Mock"):
-                        # 生产环境通常需要组装完整的广播 JSON 体，此处保持原模拟包或打包广播格式
-                        # 为防止真网络异常触发退避，我们包装网络请求头并设定 10 秒超时
-                        async with session.post(url, data=payload_bytes, timeout=10) as response:
+                        # 生产环境广播 JSON 负载
+                        # 注意：此处自动判断是 dict(json) 还是 bytes(data)
+                        req_kwargs = {"json": payload_bytes} if isinstance(payload_bytes, dict) else {"data": payload_bytes}
+                        async with session.post(url, **req_kwargs, timeout=10) as response:
                             if response.status == 200:
                                 break
                             elif response.status == 429:
                                 logger.warning(f"⚠️ [RPC 429 限流] 地址 {sender_addr[:8]} 触发现速，准备执行退避机制...")
+                            elif response.status == 404:
+                                logger.error(f"🚨 [API 路径错误] 请检查节点 URL 配置，当前路径 {url} 返回 404。")
+                                return False # 致命错误，无需无效重试
+                            
                             err_text = await response.text()
                             logger.error(f"🚨 [网络层报错] HTTP {response.status} | 响应内容: {err_text}")
                             response.raise_for_status()
@@ -358,7 +468,21 @@ class VsysAutomationEngine:
         nano_ts = int(time.time() * 1000000000)
         p_bytes = self.crypto.build_payment_bytes(recipient, amount_sat, nano_ts, fee_sat=base_fee)
         
-        success = await self.broadcast_tx_safely(session, "PAYMENT", sender, p_bytes)
+        # ⚠️ 修复：按照 VSYS 官方 API 要求包装 JSON 负载，并执行真实签名逻辑
+        sender_priv = self.ledger[sender]["pri"]
+        # 执行 25519 签名处理
+        signature = base58.b58encode(self.crypto.sign_transaction_bytes(base58.b58decode(sender_priv), p_bytes)).decode()
+        
+        tx_payload = {
+            "senderPublicKey": base58.b58encode(base58.b58decode(sender_priv)[32:]).decode(), # 模拟公钥推导逻辑
+            "recipient": recipient,
+            "amount": amount_sat,
+            "fee": base_fee,
+            "timestamp": nano_ts,
+            "signature": signature
+        }
+        
+        success = await self.broadcast_tx_safely(session, "PAYMENT", sender, tx_payload) # type: ignore
         
         # 交互反馈
         if success:
@@ -609,7 +733,7 @@ class VsysAutomationEngine:
             rate_10_backflow = b_matrix.get("l10_backflow_rate_to_l8", 0.20)
             rate_11_backflow = b_matrix.get("l11_backflow_rate_to_l8", 0.20)
             rate_12_leak = b_matrix.get("l12_leak_rate_to_l15", 0.30)
-            rate_13_leak = b_matrix.get("l13_leak_rate_to_l15", 0.50)
+            rate_13_leak = b_matrix.get("l13_leak_rate_to_l50", 0.50)
             rate_14_path_a = b_matrix.get("l14_leak_path_a_rate", 0.20)
             rate_14_path_b = b_matrix.get("l14_vortex_path_b_rate", 0.60)
 
@@ -754,3 +878,5 @@ if __name__ == "__main__":
         asyncio.run(pipeline_engine.bootstrap())
     except KeyboardInterrupt:
         logger.info("🛑 接收到系统外部中断信号，优雅断开管道。")
+vsys_route_pipeline_fixed.py
+目前显示的是“vsys_route_pipeline_fixed.py”。
