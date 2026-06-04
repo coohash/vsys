@@ -69,13 +69,13 @@ When running the provided Python code, it must connect to the VSYS Node API to f
 Public nodes are not permanently stable. Before using them, please be sure to perform the following two manual checks:
 1. 🔍 Check if the API is alive: Copy the node address directly into your browser. If the Swagger page opens, the node is online.
 2. 🔍 Check if the data is synced: Append "/blocks/height" to the node address to get the block height. If it matches the VSYS official explorer (explorer.v.systems), it is up to date and safe to use.
-3. 
+
 ![Security](https://img.shields.io/badge/VSYS%20node-%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E8%87%AA%E5%BB%BAVSYS%E8%8A%82%E7%82%B9-success?style=for-the-badge&logo=githubactions&logoColor=white)
-🚀 Speed Advantage: If you are using a private node independently set up on your computer or server (refer to vsys_supernode_install.txt for setup instructions), the code calling speed can exceed 8000 times/second since there are no external network restrictions.
+* 🚀 Speed Advantage: If you are using a private node independently set up on your computer or server (refer to vsys_supernode_install.txt for setup instructions), the code calling speed can exceed 8000 times/second since there are no external network restrictions.
 
-📍 Default local node address: 127.0.0.1:9922
+* 📍 Default local node address: 127.0.0.1:9922
 
-📂 Repository Directory Structure
+## 📂 Repository Directory Structure
  ```text
 VSYS-Blockchain-Python-Code/
 ├── .gitignore                       # Git ignore file configuration
